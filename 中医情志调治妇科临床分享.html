@@ -1,0 +1,2511 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中医情志调治在基层常见妇科疾病的临床分享</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+  :root {
+    --ink: #1e3352;
+    --cinnabar: #c0392b;
+    --gold: #c9a84c;
+    --jade: #2d6a4f;
+    --mist: #e8f4f1;
+    --cream: #faf7f2;
+    --warm-white: #fffef9;
+    --rust: #8b4513;
+    --pale-gold: #f5e6c8;
+    --teal: #1b6ca8;
+    --light-teal: #e8f4fc;
+  }
+
+  /* Scale font sizes relative to slide width using container queries or vw */
+  /* The slide width is ~89vw on a wide screen; we use vw for fluid scaling */
+
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100vw; height: 100vh;
+    overflow: hidden;
+    margin: 0; padding: 0;
+  }
+
+  body {
+    font-family: 'Noto Sans SC', sans-serif;
+    background: #1a3045;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    color: var(--ink);
+  }
+
+  /* Navigation */
+  .nav {
+    position: relative;
+    z-index: 1000;
+    background: rgba(18,32,48,0.98);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 30px;
+    border-bottom: 1px solid rgba(201,168,76,0.3);
+    flex-shrink: 0;
+  }
+  .nav-title {
+    color: var(--gold);
+    font-family: 'Noto Serif SC', serif;
+    font-size:30px;
+    letter-spacing: 2px;
+  }
+  .nav-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .nav-btn {
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--gold);
+    padding: 6px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size:30px;
+    font-family: 'Noto Sans SC', sans-serif;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover { background: rgba(201,168,76,0.3); }
+  .slide-counter {
+    color: rgba(201,168,76,0.7);
+    font-size:30px;
+    min-width: 60px;
+    text-align: center;
+  }
+
+  /* Slide container: fills every remaining pixel */
+  .slides-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #1a3045;
+  }
+
+  /* Slide: fills container, 16:9. The flex container is 100vw × remaining height.
+     The slide should be as wide as possible without exceeding the height constraint. */
+  .slide {
+    display: none;
+    /* Be as wide as possible, but if that makes us taller than the container, shrink */
+    width: 100%;
+    max-width: calc((100vh - 44px) * 16 / 9);
+    aspect-ratio: 16 / 9;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 16px 60px rgba(0,0,0,0.7);
+    animation: slideIn 0.35s ease;
+    position: relative;
+  }
+  .slide.active { display: block; }
+
+  /* ── slide transition ── */
+  @keyframes slideInRight {
+    from { opacity: 0; transform: translateX(60px) scale(0.97); }
+    to   { opacity: 1; transform: translateX(0)    scale(1); }
+  }
+  @keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-60px) scale(0.97); }
+    to   { opacity: 1; transform: translateX(0)     scale(1); }
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── stagger children when slide becomes active ── */
+  .slide.active .card,
+  .slide.active .timeline-item,
+  .slide.active .case-card,
+  .slide.active .flow-step,
+  .slide.active .stat-box,
+  .slide.active .summary-card,
+  .slide.active .quote-box,
+  .slide.active .highlight-box {
+    animation: popIn 0.45s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+  /* stagger each child */
+  .slide.active .card:nth-child(1),  .slide.active .timeline-item:nth-child(1),
+  .slide.active .case-card:nth-child(1), .slide.active .flow-step:nth-child(1),
+  .slide.active .stat-box:nth-child(1), .slide.active .summary-card:nth-child(1) { animation-delay: 0.08s; }
+  .slide.active .card:nth-child(2),  .slide.active .timeline-item:nth-child(2),
+  .slide.active .case-card:nth-child(2), .slide.active .flow-step:nth-child(2),
+  .slide.active .stat-box:nth-child(2), .slide.active .summary-card:nth-child(2) { animation-delay: 0.16s; }
+  .slide.active .card:nth-child(3),  .slide.active .timeline-item:nth-child(3),
+  .slide.active .case-card:nth-child(3), .slide.active .flow-step:nth-child(3),
+  .slide.active .stat-box:nth-child(3), .slide.active .summary-card:nth-child(3) { animation-delay: 0.24s; }
+  .slide.active .card:nth-child(4),  .slide.active .timeline-item:nth-child(4),
+  .slide.active .case-card:nth-child(4), .slide.active .flow-step:nth-child(4),
+  .slide.active .stat-box:nth-child(4), .slide.active .summary-card:nth-child(4) { animation-delay: 0.32s; }
+  .slide.active .card:nth-child(5),  .slide.active .timeline-item:nth-child(5),
+  .slide.active .case-card:nth-child(5), .slide.active .flow-step:nth-child(5),
+  .slide.active .stat-box:nth-child(5), .slide.active .summary-card:nth-child(5) { animation-delay: 0.40s; }
+
+  @keyframes popIn {
+    from { opacity: 0; transform: translateY(22px) scale(0.95); }
+    to   { opacity: 1; transform: translateY(0)    scale(1); }
+  }
+
+  /* ── slide header text reveal ── */
+  .slide.active .slide-header-title {
+    animation: revealTitle 0.5s cubic-bezier(0.22,1,0.36,1) 0.05s both;
+  }
+  @keyframes revealTitle {
+    from { opacity: 0; letter-spacing: 6px; transform: translateY(-10px); }
+    to   { opacity: 1; letter-spacing: 1px; transform: translateY(0); }
+  }
+
+  /* ── cover elements ── */
+  .slide.active .cover-hospital  { animation: fadeUp 0.5s ease 0.1s  both; }
+  .slide.active .cover-motto     { animation: fadeUp 0.5s ease 0.2s  both; }
+  .slide.active .cover-main-title{ animation: fadeUp 0.6s ease 0.3s  both; }
+  .slide.active .cover-subtitle  { animation: fadeUp 0.5s ease 0.45s both; }
+  .slide.active .cover-divider   { animation: growWidth 0.6s ease 0.55s both; }
+  .slide.active .cover-author    { animation: fadeUp 0.5s ease 0.65s both; }
+
+  @keyframes growWidth {
+    from { width: 0; opacity: 0; }
+    to   { width: 60px; opacity: 1; }
+  }
+
+  /* ── break-slide elements ── */
+  .slide.active .break-case-label  { animation: fadeUp 0.45s ease 0.1s both; }
+  .slide.active .break-case-title  { animation: fadeUp 0.55s ease 0.2s both; }
+  .slide.active .break-case-subtitle { animation: fadeUp 0.45s ease 0.35s both; }
+
+  /* ── bar chart fill animation ── */
+  .slide.active .bar-fill {
+    animation: barGrow 0.8s cubic-bezier(0.22,1,0.36,1) 0.3s both;
+  }
+  @keyframes barGrow {
+    from { width: 0 !important; }
+  }
+
+  /* ── stat numbers count up feel ── */
+  .slide.active .stat-num {
+    animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.2s both;
+  }
+
+  /* ── flow-step arrow pulse ── */
+  .flow-step:not(:last-child)::after {
+    animation: arrowPulse 1.8s ease-in-out infinite;
+  }
+  @keyframes arrowPulse {
+    0%, 100% { opacity: 0.6; transform: translateY(-50%) translateX(0); }
+    50%       { opacity: 1;   transform: translateY(-50%) translateX(3px); }
+  }
+
+  /* ── hover micro-interactions ── */
+  .card { transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease; }
+  .card:hover { transform: translateY(-4px) scale(1.01); box-shadow: 0 8px 24px rgba(0,0,0,0.14); }
+
+  .case-card { transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease; }
+  .case-card:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 12px 32px rgba(0,0,0,0.18); }
+
+  .timeline-item { transition: transform 0.25s ease, border-top-width 0.25s ease; }
+  .timeline-item:hover { transform: translateX(4px); border-top-width: 5px; }
+
+  .nav-btn { transition: all 0.2s cubic-bezier(0.34,1.56,0.64,1); }
+  .nav-btn:hover { transform: scale(1.08); }
+
+  .thumb-dot { transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+  .thumb-dot:hover { transform: scale(1.6); background: var(--gold) !important; }
+
+  /* ── floating particles on cover ── */
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: 0;
+    pointer-events: none;
+    animation: float linear infinite;
+  }
+  @keyframes float {
+    0%   { transform: translateY(0) rotate(0deg);   opacity: 0; }
+    10%  { opacity: 0.25; }
+    90%  { opacity: 0.15; }
+    100% { transform: translateY(-120px) rotate(360deg); opacity: 0; }
+  }
+
+  /* ── shimmer on gold accents ── */
+  .cover-seal {
+    animation: pulse 3s ease-in-out infinite, sealSpin 12s linear infinite;
+  }
+  @keyframes sealSpin {
+    from { box-shadow: 0 0 0 0 rgba(192,57,43,0); }
+    50%  { box-shadow: 0 0 16px 4px rgba(192,57,43,0.3); }
+    to   { box-shadow: 0 0 0 0 rgba(192,57,43,0); }
+  }
+
+  /* ── progress bar glow ── */
+  .progress-bar {
+    box-shadow: 0 0 8px rgba(201,168,76,0.7);
+    transition: width 0.4s cubic-bezier(0.22,1,0.36,1);
+  }
+
+  /* ── quote box slide in from left ── */
+  .slide.active .quote-box {
+    animation: slideFromLeft 0.5s cubic-bezier(0.22,1,0.36,1) 0.3s both;
+  }
+  @keyframes slideFromLeft {
+    from { opacity: 0; transform: translateX(-20px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  /* ── highlight box glow pulse ── */
+  .highlight-box {
+    animation: glowPulse 4s ease-in-out infinite;
+  }
+  @keyframes glowPulse {
+    0%, 100% { box-shadow: 0 2px 12px rgba(26,46,66,0.3); }
+    50%       { box-shadow: 0 4px 24px rgba(201,168,76,0.2); }
+  }
+
+  /* ========== SLIDE 1: COVER ========== */
+  .slide-cover {
+    background: linear-gradient(135deg, #1a2e42 0%, #1e3d5a 40%, #1a3a5c 100%);
+    position: relative;
+    padding: 4vh 5vw;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .cover-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23c9a84c' fill-opacity='1'%3E%3Ccircle cx='40' cy='40' r='2'/%3E%3Cpath d='M40 10 L42 38 L40 40 L38 38 Z'/%3E%3Cpath d='M40 70 L42 42 L40 40 L38 42 Z'/%3E%3Cpath d='M10 40 L38 38 L40 40 L38 42 Z'/%3E%3Cpath d='M70 40 L42 38 L40 40 L42 42 Z'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  .cover-seal {
+    position: absolute;
+    top: 40px; right: 50px;
+    width: 80px; height: 80px;
+    border: 2px solid var(--cinnabar);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Noto Serif SC', serif;
+    font-size:63px;
+    color: var(--cinnabar);
+    font-weight: 700;
+    opacity: 0.8;
+    animation: pulse 3s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 0.9; transform: scale(1.03); }
+  }
+  .cover-hospital {
+    color: var(--gold);
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(22px, 2.25vw, 32px);
+    letter-spacing: 4px;
+    margin-bottom: 8px;
+    animation: fadeUp 0.6s ease;
+  }
+  .cover-motto {
+    color: rgba(201,168,76,0.5);
+    font-size:27px;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+    animation: fadeUp 0.7s ease;
+  }
+  .cover-main-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(42px, 5.4vw, 77px);
+    font-weight: 700;
+    color: var(--warm-white);
+    line-height: 1.3;
+    margin-bottom: 1vh;
+    animation: fadeUp 0.8s ease;
+  }
+  .cover-main-title span {
+    color: var(--gold);
+  }
+  .cover-subtitle {
+    color: rgba(255,255,255,0.6);
+    font-size: clamp(22px, 2.25vw, 32px);
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    animation: fadeUp 0.9s ease;
+  }
+  .cover-divider {
+    width: 60px; height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    margin-bottom: 24px;
+    animation: fadeUp 1s ease;
+  }
+  .cover-author {
+    color: rgba(255,255,255,0.8);
+    font-size: clamp(24px, 2.4vw, 35px);
+    letter-spacing: 2px;
+    animation: fadeUp 1.1s ease;
+  }
+  .cover-note {
+    position: absolute;
+    bottom: 30px;
+    color: rgba(255,255,255,0.25);
+    font-size:24px;
+    letter-spacing: 1px;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ========== STANDARD SLIDE ========== */
+  .slide-std {
+    background: #fdfaf4;
+    position: relative;
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .slide-header {
+    background: linear-gradient(135deg, #1a2e42 0%, #1e4060 100%);
+    padding: 1.4vh 2.5vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .slide-header-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(24px, 2.85vw, 38px);
+    font-weight: 700;
+    color: var(--warm-white);
+    letter-spacing: 1px;
+  }
+  .slide-header-tag {
+    font-size: clamp(18px, 1.5vw, 21px);
+    color: var(--gold);
+    letter-spacing: 2px;
+    opacity: 0.8;
+  }
+  .slide-body {
+    padding: 20px 32px 16px;
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .hospital-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--ink);
+    color: var(--gold);
+    padding: 4px 14px;
+    border-radius: 2px;
+    font-size:24px;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    font-family: 'Noto Serif SC', serif;
+  }
+
+  /* Section break slides */
+  .slide-break {
+    background: linear-gradient(135deg, #1e3a5c 0%, #1a3050 60%, var(--ink) 100%);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 3vh 5vw;
+  }
+  .break-number {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 100px;
+    font-weight: 900;
+    color: rgba(201,168,76,0.08);
+    position: absolute;
+    top: 20px; right: 40px;
+    line-height: 1;
+  }
+  .break-case-label {
+    color: var(--cinnabar);
+    font-size:27px;
+    letter-spacing: 4px;
+    margin-bottom: 16px;
+    animation: fadeUp 0.5s ease;
+  }
+  .break-case-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(35px, 4.2vw, 61px);
+    font-weight: 700;
+    color: var(--warm-white);
+    text-align: center;
+    margin-bottom: 20px;
+    line-height: 1.5;
+    animation: fadeUp 0.6s ease;
+  }
+  .break-case-subtitle {
+    color: rgba(255,255,255,0.45);
+    font-size:32px;
+    letter-spacing: 2px;
+    text-align: center;
+    animation: fadeUp 0.7s ease;
+  }
+  .break-doctor {
+    position: absolute;
+    bottom: 30px;
+    color: rgba(201,168,76,0.5);
+    font-size:27px;
+    letter-spacing: 2px;
+  }
+
+  /* Content elements */
+  .cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(10px, 1.5vw, 22px); }
+  .cols-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: clamp(8px, 1.2vw, 19px); }
+  .cols-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(8px, 1.2vw, 19px); }
+  .cols-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: clamp(6px, 0.9vw, 16px); }
+
+  .card {
+    background: white;
+    border-radius: 8px;
+    padding: 10px 12px;
+    border-left: 3px solid var(--gold);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .card-jade { border-left-color: var(--jade); }
+  .card-teal { border-left-color: var(--teal); }
+  .card-red { border-left-color: var(--cinnabar); }
+  .card-rust { border-left-color: var(--rust); }
+
+  .card-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(21px, 2.1vw, 27px);
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.6vh;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-body {
+    font-size: clamp(15px, 1.55vw, 20px);
+    color: #333;
+    line-height: 1.75;
+  }
+  .card-body li {
+    list-style: none;
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 5px;
+  }
+  .card-body li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  .icon {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size:32px;
+    flex-shrink: 0;
+  }
+  .icon-gold { background: rgba(201,168,76,0.15); color: var(--gold); }
+  .icon-jade { background: rgba(45,106,79,0.12); color: var(--jade); }
+  .icon-red { background: rgba(192,57,43,0.12); color: var(--cinnabar); }
+  .icon-teal { background: rgba(27,108,168,0.12); color: var(--teal); }
+
+  .section-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(22px, 2.4vw, 32px);
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(201,168,76,0.3);
+  }
+
+  .highlight-box {
+    background: linear-gradient(135deg, #1a2e42 0%, #1e4060 100%);
+    border-radius: 8px;
+    padding: 10px 16px;
+    color: var(--warm-white);
+    font-size: clamp(19px, 1.88vw, 26px);
+    line-height: 1.75;
+    margin-top: 10px;
+  }
+  .highlight-box strong { color: var(--gold); }
+
+  .quote-box {
+    background: var(--pale-gold);
+    border-left: 4px solid var(--gold);
+    padding: 8px 14px;
+    border-radius: 0 6px 6px 0;
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(19px, 1.88vw, 26px);
+    color: var(--rust);
+    font-style: italic;
+    margin: 14px 0;
+  }
+
+  .timeline-item {
+    background: white;
+    border-radius: 8px;
+    padding: 10px 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border-top: 3px solid var(--teal);
+    position: relative;
+  }
+  .timeline-label {
+    font-size: clamp(18px, 1.8vw, 24px);
+    color: var(--teal);
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .timeline-content {
+    font-size: clamp(15px, 1.55vw, 20px);
+    color: #333;
+    line-height: 1.75;
+  }
+  .timeline-content li {
+    list-style: none;
+    padding-left: 12px;
+    position: relative;
+    margin-bottom: 3px;
+  }
+  .timeline-content li::before { content: '·'; position: absolute; left: 0; color: var(--teal); font-weight: 700; }
+
+  .medicine-chip {
+    display: inline-block;
+    background: rgba(27,108,168,0.1);
+    color: var(--teal);
+    padding: 3px 9px;
+    border-radius: 12px;
+    font-size: clamp(16px, 1.58vw, 21px);
+    margin: 3px 2px;
+    border: 1px solid rgba(27,108,168,0.2);
+  }
+
+  .stat-box {
+    background: white;
+    border-radius: 8px;
+    padding: 10px 12px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+  .stat-num {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(32px, 3.75vw, 58px);
+    font-weight: 700;
+    color: var(--teal);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-label {
+    font-size:27px;
+    color: #666;
+    letter-spacing: 1px;
+  }
+  .stat-sub {
+    font-size:24px;
+    color: #999;
+    margin-top: 4px;
+  }
+
+  /* Flow steps */
+  .flow-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto;
+    gap: 14px;
+    margin: 10px 0 12px;
+  }
+  /* 4th and 5th items: centre them in a sub-row */
+  .flow-steps .flow-step:nth-child(4) {
+    grid-column: 1 / 2;
+    margin-left: calc(50% + 7px);
+  }
+  .flow-steps .flow-step:nth-child(5) {
+    grid-column: 2 / 3;
+    margin-right: calc(50% + 7px);
+  }
+  /* easier: just wrap the last 2 into a centred flex row via JS — 
+     instead use a 2-col second row by overriding grid on the container */
+  .flow-steps {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .flow-step {
+    background: white;
+    padding: 16px 12px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    border-radius: 10px;
+    border-top: 3px solid var(--gold);
+  }
+  .flow-step:not(:last-child)::after {
+    display: none;
+  }
+  .flow-step-num {
+    width: 42px; height: 42px;
+    background: var(--ink);
+    color: var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: clamp(18px, 1.8vw, 24px);
+    font-weight: 700;
+    margin: 0 auto 10px;
+  }
+  .flow-step-title {
+    font-size: clamp(20px, 2.1vw, 28px);
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .flow-step-sub {
+    font-size: clamp(16px, 1.6vw, 22px);
+    color: #777;
+    line-height: 1.6;
+  }
+
+  /* Case overview cards */
+  .case-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.08);
+    transition: transform 0.2s;
+  }
+  .case-card:hover { transform: translateY(-3px); }
+  .case-card-header {
+    padding: 12px 16px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .case-card-header.c1 { background: linear-gradient(135deg, #c0392b, #922b21); }
+  .case-card-header.c2 { background: linear-gradient(135deg, #2d6a4f, #1b4332); }
+  .case-card-header.c3 { background: linear-gradient(135deg, #1b6ca8, #154478); }
+  .case-card-header.c4 { background: linear-gradient(135deg, #8b4513, #5d2e0c); }
+  .case-icon { font-size:50px; }
+  .case-card-title { font-family: 'Noto Serif SC', serif; font-size: clamp(22px, 2.25vw, 29px); font-weight: 700; }
+  .case-card-age { font-size:24px; opacity: 0.8; }
+  .case-card-body { padding: 14px 16px; }
+  .case-card-body ul { list-style: none; }
+  .case-card-body li {
+    font-size: clamp(19px, 1.88vw, 24px);
+    color: #444;
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 4px;
+    line-height: 1.75;
+  }
+  .case-card-body li::before { content: '◆'; position: absolute; left: 0; font-size: 8px; top: 4px; color: var(--gold); }
+  .case-tag {
+    display: inline-block;
+    background: var(--pale-gold);
+    color: var(--rust);
+    font-size:24px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-top: 8px;
+    font-weight: 600;
+  }
+
+  /* Chart bars for data */
+  .bar-chart { margin: 10px 0; }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    gap: 10px;
+  }
+  .bar-label { font-size: clamp(19px, 1.8vw, 24px); color: #555; width: 50px; text-align: right; flex-shrink: 0; }
+  .bar-track {
+    flex: 1;
+    height: 22px;
+    background: #eee;
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+    font-size: clamp(18px, 1.65vw, 22px);
+    color: white;
+    font-weight: 600;
+    transition: width 1s ease;
+  }
+  .bar-val { font-size: clamp(18px, 1.65vw, 22px); color: #555; width: 45px; flex-shrink: 0; }
+
+  /* Tongue/Herb visual accent */
+  .tcm-accent {
+    position: absolute;
+    right: 30px; bottom: 30px;
+    opacity: 0.04;
+    font-size: 120px;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  /* Summary slide */
+  .slide-summary {
+    background: linear-gradient(135deg, #1e2d3d 0%, #1e3a5c 50%, #1a3a5c 100%);
+    padding: 2vh 3vw 1.5vh;
+    height: 100%;
+    position: relative;
+    overflow-y: auto;
+  }
+  .summary-quote {
+    font-family: 'Noto Serif SC', serif;
+    font-size:45px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.9;
+    text-align: center;
+    margin-bottom: 40px;
+    animation: fadeUp 0.7s ease;
+  }
+  .summary-quote em { color: var(--gold); font-style: normal; }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-top: 20px;
+  }
+  .summary-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 8px;
+    padding: 10px 8px;
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .summary-card:hover { background: rgba(255,255,255,0.1); transform: translateY(-3px); }
+  .summary-card-icon { font-size:54px; margin-bottom: 8px; }
+  .summary-card-num {
+    font-family: 'Noto Serif SC', serif;
+    font-size:40px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .summary-card-title {
+    font-size:30px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.5;
+  }
+  .summary-card-body {
+    font-size:24px;
+    color: rgba(255,255,255,0.45);
+    margin-top: 6px;
+    line-height: 1.75;
+  }
+
+  /* Final closing slide */
+  .slide-final {
+    background: linear-gradient(135deg, #1e2d3d 0%, #1e3352 60%, #1a3a5c 100%);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3vh 5vw;
+    position: relative;
+    overflow: hidden;
+  }
+  .final-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.03;
+    background-image: repeating-linear-gradient(45deg, var(--gold) 0, var(--gold) 1px, transparent 0, transparent 50%);
+    background-size: 20px 20px;
+  }
+  .final-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(35px, 4.2vw, 61px);
+    font-weight: 700;
+    color: var(--warm-white);
+    line-height: 1.8;
+    margin-bottom: 30px;
+    animation: fadeUp 0.6s ease;
+  }
+  .final-title em { color: var(--gold); font-style: normal; }
+  .final-divider {
+    width: 80px; height: 1px;
+    background: var(--gold);
+    margin: 20px auto;
+    opacity: 0.5;
+  }
+  .final-thanks {
+    color: rgba(255,255,255,0.55);
+    font-size:36px;
+    letter-spacing: 4px;
+    animation: fadeUp 0.8s ease;
+  }
+  .final-doctor {
+    color: var(--gold);
+    font-size:32px;
+    letter-spacing: 2px;
+    margin-top: 16px;
+    animation: fadeUp 0.9s ease;
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    position: fixed;
+    bottom: 0; left: 0;
+    height: 3px;
+    background: var(--gold);
+    transition: width 0.3s ease;
+    z-index: 2000;
+  }
+
+  /* Thumbnail strip */
+  .thumb-strip {
+    position: fixed;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 4px;
+    z-index: 999;
+  }
+  .thumb-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.3);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .thumb-dot.active { background: var(--gold); transform: scale(1.4); }
+
+  /* Responsive */
+  .sub-label {
+    font-size: clamp(18px, 1.65vw, 22px);
+    color: #999;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  ul.plain { list-style: none; }
+  ul.plain li {
+    font-size: clamp(19px, 1.95vw, 26px);
+    color: #444;
+    padding-left: 16px;
+    position: relative;
+    margin-bottom: 5px;
+    line-height: 1.8;
+  }
+  ul.plain li::before { content: '▸'; position: absolute; left: 0; color: var(--gold); font-size:22px; top: 3px; }
+
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .tag {
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-size:27px;
+    font-weight: 500;
+  }
+  .tag-gold { background: var(--pale-gold); color: var(--rust); }
+  .tag-jade { background: rgba(45,106,79,0.1); color: var(--jade); }
+  .tag-teal { background: rgba(27,108,168,0.1); color: var(--teal); }
+  .tag-red { background: rgba(192,57,43,0.08); color: var(--cinnabar); }
+
+  .mt8 { margin-top: 8px; }
+  .mt12 { margin-top: 8px; }
+  .mt16 { margin-top: 10px; }
+  .mt20 { margin-top: 12px; }
+
+  .footnote {
+    font-size:24px;
+    color: #aaa;
+    font-style: italic;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+  }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav">
+  <div class="nav-title">中医情志调治 · 妇科临床分享</div>
+  <div class="nav-controls">
+    <button class="nav-btn" onclick="prevSlide()">◀ 上一页</button>
+    <span class="slide-counter" id="counter">1 / 32</span>
+    <button class="nav-btn" onclick="nextSlide()">下一页 ▶</button>
+  </div>
+</nav>
+
+<div class="slides-wrapper">
+
+  <!-- ===== SLIDE 1: COVER ===== -->
+  <div class="slide active" id="slide-1">
+    <div class="slide-cover">
+      <div class="cover-pattern"></div>
+      <!-- floating particles -->
+      <div class="particle" style="width:6px;height:6px;left:10%;bottom:5%;animation-duration:7s;animation-delay:0s"></div>
+      <div class="particle" style="width:4px;height:4px;left:25%;bottom:10%;animation-duration:9s;animation-delay:1s"></div>
+      <div class="particle" style="width:8px;height:8px;left:40%;bottom:3%;animation-duration:11s;animation-delay:2s"></div>
+      <div class="particle" style="width:5px;height:5px;left:55%;bottom:8%;animation-duration:8s;animation-delay:0.5s"></div>
+      <div class="particle" style="width:3px;height:3px;left:70%;bottom:6%;animation-duration:10s;animation-delay:1.5s"></div>
+      <div class="particle" style="width:7px;height:7px;left:85%;bottom:4%;animation-duration:6s;animation-delay:3s"></div>
+      <div class="particle" style="width:4px;height:4px;left:15%;bottom:15%;animation-duration:12s;animation-delay:2.5s"></div>
+      <div class="particle" style="width:6px;height:6px;left:60%;bottom:12%;animation-duration:8.5s;animation-delay:4s"></div>
+      <div class="cover-seal">中</div>
+      <div class="cover-hospital">东莞市虎门中医院</div>
+      <div class="cover-motto">厚德精医 · 传承创新</div>
+      <div class="cover-main-title"><span>中医情志调治</span><br>在基层常见妇科疾病的<br>临床分享</div>
+      <div class="cover-subtitle">临床病例整理与辨治思路</div>
+      <div class="cover-divider"></div>
+      <div class="cover-author">汇报人：胡丽华 副主任医师</div>
+      <div class="cover-note">东莞市虎门中医院 · 学术交流 · 病例已匿名化整理 · 突出基层诊治流程</div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 2: STRUCTURE ===== -->
+  <div class="slide" id="slide-2">
+    <div class="slide-std">
+      <div class="slide-header">
+        <div class="slide-header-title">本次分享的结构：从理论到病例，再回到基层应用</div>
+        <div class="slide-header-tag">传承精华 · 守正创新 · 仁心仁术 · 服务基层</div>
+      </div>
+      <div class="slide-body">
+        <div class="flow-steps" style="grid-template-columns:repeat(3,1fr);grid-template-rows:auto auto;">
+          <div class="flow-step">
+            <div class="flow-step-num">1</div>
+            <div class="flow-step-title">🔍 看见主诉</div>
+            <div class="flow-step-sub">经、带、癥、眩<br>常见症状</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-step-num">2</div>
+            <div class="flow-step-title">💬 追问情志</div>
+            <div class="flow-step-sub">压力、睡眠<br>焦虑与顾虑</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-step-num">3</div>
+            <div class="flow-step-title">⚖️ 整体辨证</div>
+            <div class="flow-step-sub">肝脾肾心<br>冲任胞宫</div>
+          </div>
+          <!-- row 2: centred pair, spanning all 3 cols -->
+          <div style="grid-column:1/4; display:flex; justify-content:center; gap:14px;">
+            <div class="flow-step" style="width:32%">
+              <div class="flow-step-num">4</div>
+              <div class="flow-step-title">🌿 分期调治</div>
+              <div class="flow-step-sub">经前/经期/经后<br>随访调整</div>
+            </div>
+            <div class="flow-step" style="width:32%">
+              <div class="flow-step-num">5</div>
+              <div class="flow-step-title">📋 长期管理</div>
+              <div class="flow-step-sub">宣教、复查<br>依从性提升</div>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-box" style="margin-top:10px">
+          <strong>核心命题</strong>
+          <ul class="plain" style="margin-top:8px">
+            <li style="color:rgba(255,255,255,0.85)">情志调治不是"附属安慰"，而是辨证体系的一部分。</li>
+            <li style="color:rgba(255,255,255,0.85)">基层优势在于可连续随访，更适合身心同调与长期管理。</li>
+            <li style="color:rgba(255,255,255,0.85)">局部症状改善、检查指标变化、患者信心建立，常常不是同步发生。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 3: THEORY BACKGROUND ===== -->
+  <div class="slide" id="slide-3">
+    <div class="slide-std">
+      <div class="slide-header">
+        <div class="slide-header-title">分享背景与理论基础</div>
+        <div class="slide-header-tag">传承精华 · 守正创新 · 仁心仁术 · 服务基层</div>
+      </div>
+      <div class="slide-body">
+        <div class="cols-3">
+          <div class="card card-jade">
+            <div class="card-title"><span class="icon icon-jade">🏥</span>基层门诊常见特点</div>
+            <div class="card-body">
+              <ul>
+                <li>月经不调、痛经、经前烦躁、乳胀、反复带下、围绝经期不适</li>
+                <li>患者常伴压力大、睡眠差、焦虑、复发担忧、疼痛恐惧</li>
+                <li>就诊时"局部症状明显，整体失衡同在"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-teal">
+            <div class="card-title"><span class="icon icon-teal">📖</span>中医对情志与妇科的认识</div>
+            <div class="card-body">
+              <ul>
+                <li>肝主疏泄，关系气机调畅与月经来潮</li>
+                <li>脾为气血生化之源，失运则湿浊内生</li>
+                <li>肾主生殖，冲任胞宫赖其充养</li>
+                <li>心主神明，睡眠与情绪影响病程恢复</li>
+                <li>情志失调→肝郁气滞、气滞血瘀、心脾两虚等</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-red">
+            <div class="card-title"><span class="icon icon-red">💡</span>临床价值</div>
+            <div class="card-body">
+              <ul>
+                <li>情志调治是整体辨证的重要组成</li>
+                <li>治局部症状，亦治失眠、焦虑、节律紊乱</li>
+                <li>基层随访便利，适合身心同调与长期管理</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="quote-box mt16">
+          核心认识：妇科疾病治疗不仅要调经止痛、止带止痒，更要<strong>调气机、养气血、安情志、稳睡眠</strong>。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 4: DIAGNOSIS APPROACH ===== -->
+  <div class="slide" id="slide-4">
+    <div class="slide-std">
+      <div class="slide-header">
+        <div class="slide-header-title">基层常见妇科疾病的情志相关诊治思路</div>
+        <div class="slide-header-tag">传承精华 · 守正创新 · 仁心仁术 · 服务基层</div>
+      </div>
+      <div class="slide-body">
+        <div class="cols-2" style="gap:8px">
+          <div>
+            <div class="cols-2" style="gap:8px">
+              <div class="card" style="border-left-color:#c0392b">
+                <div class="card-title" style="font-size:30px"><span class="icon icon-red" style="font-size:27px">🩺</span>基层常见问题</div>
+                <div class="card-body">
+                  <ul>
+                    <li>月经不调、痛经</li>
+                    <li>经前乳胀、烦躁</li>
+                    <li>围绝经期潮热、失眠、心悸</li>
+                    <li>反复带下、阴痒</li>
+                    <li>慢性盆腔不适</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="card" style="border-left-color:#8b4513">
+                <div class="card-title" style="font-size:30px"><span class="icon" style="background:rgba(139,69,19,0.1);color:#8b4513;width:28px;height:28px;font-size:30px">😟</span>常见情志诱因</div>
+                <div class="card-body">
+                  <ul>
+                    <li>工作与生活压力</li>
+                    <li>焦虑、急躁、抑郁、疑病</li>
+                    <li>长期熬夜、睡眠不足</li>
+                    <li>疼痛恐惧与复发担忧</li>
+                    <li>饮食失调与节律紊乱</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="cols-2" style="gap:8px">
+              <div class="card card-jade">
+                <div class="card-title" style="font-size:30px"><span class="icon icon-jade" style="font-size:27px">⚗️</span>中医病机要点</div>
+                <div class="card-body">
+                  <ul>
+                    <li>肝郁气滞，冲任失调</li>
+                    <li>气滞血瘀，不通则痛</li>
+                    <li>脾虚失运，湿浊下注</li>
+                    <li>心脾两虚，心神失养</li>
+                    <li>阴虚内热 / 中虚偏寒</li>
+                    <li>兼顾"不通""不荣"则痛</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="card card-teal">
+                <div class="card-title" style="font-size:30px"><span class="icon icon-teal" style="font-size:27px">📋</span>临床诊治流程</div>
+                <div class="card-body">
+                  <ul>
+                    <li>问情志、睡眠、压力来源</li>
+                    <li>辨病辨证并重，分清虚实寒热</li>
+                    <li>结合经期阶段分期调治</li>
+                    <li>中药、艾灸、外治结合</li>
+                    <li>重视宣教与随访评估</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-box" style="margin-top:16px; text-align:center">
+          <strong>核心目标：身心同调</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 5: CASE OVERVIEW ===== -->
+  <div class="slide" id="slide-5">
+    <div class="slide-std">
+      <div class="slide-header">
+        <div class="slide-header-title">病例总览：从"经、带、癥、眩"观察情志与整体辨证</div>
+        <div class="slide-header-tag">传承精华 · 守正创新 · 仁心仁术 · 服务基层</div>
+      </div>
+      <div class="slide-body">
+        <div class="cols-4" style="gap:10px">
+          <div class="case-card">
+            <div class="case-card-header c1">
+              <span class="case-icon">🔴</span>
+              <div>
+                <div class="case-card-title">病例一｜痛经</div>
+                <div class="case-card-age">25岁 · 未婚未育</div>
+              </div>
+            </div>
+            <div class="case-card-body">
+              <ul>
+                <li>痛经反复5年余，需服止痛药</li>
+                <li>经前急躁、睡眠差，舌红花剥苔</li>
+                <li>辨治：脾阴不足→心脾两虚→中虚偏寒</li>
+              </ul>
+              <div class="case-tag">重点：不荣则痛</div>
+            </div>
+          </div>
+          <div class="case-card">
+            <div class="case-card-header c2">
+              <span class="case-icon">🟢</span>
+              <div>
+                <div class="case-card-title">病例二｜带下病</div>
+                <div class="case-card-age">28岁 · 银行职员</div>
+              </div>
+            </div>
+            <div class="case-card-body">
+              <ul>
+                <li>反复念珠菌阴道炎，阴痒带下异常</li>
+                <li>熬夜直播、冰饮、节食、焦虑疑病</li>
+                <li>辨治：脾阳不足，水湿下注</li>
+              </ul>
+              <div class="case-tag" style="background:rgba(45,106,79,0.1);color:var(--jade)">重点：处理生湿之源</div>
+            </div>
+          </div>
+          <div class="case-card">
+            <div class="case-card-header c3">
+              <span class="case-icon">🔵</span>
+              <div>
+                <div class="case-card-title">病例三｜巧克力囊肿</div>
+                <div class="case-card-age">已婚育 · 无生育需求</div>
+              </div>
+            </div>
+            <div class="case-card-body">
+              <ul>
+                <li>痛经、经前乳胀，曾月经期咯血</li>
+                <li>担心激素副作用，拒绝地诺孕素</li>
+                <li>辨治：气滞血瘀，癥积内结</li>
+              </ul>
+              <div class="case-tag" style="background:rgba(27,108,168,0.1);color:var(--teal)">重点：理气化瘀消癥</div>
+            </div>
+          </div>
+          <div class="case-card">
+            <div class="case-card-header c4">
+              <span class="case-icon">🟤</span>
+              <div>
+                <div class="case-card-title">病例四｜眩晕</div>
+                <div class="case-card-age">33岁 · 产后两地分居</div>
+              </div>
+            </div>
+            <div class="case-card-body">
+              <ul>
+                <li>焦虑失眠后出现眩晕心悸乏力</li>
+                <li>多科检查未见明显异常</li>
+                <li>辨治：痰浊中阻，气机不畅</li>
+              </ul>
+              <div class="case-tag" style="background:rgba(139,69,19,0.1);color:var(--rust)">重点：脾胃痰湿气机</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 6: CASE 1 BREAK ===== -->
+  <div class="slide" id="slide-6">
+    <div class="slide-break">
+      <div class="break-number">01</div>
+      <div class="break-case-label">CASE ONE · 病例一</div>
+      <div class="break-case-title">痛经伴情志与睡眠问题<br>从脾阴不足、心脾两虚<br>到中虚偏寒的分期辨治</div>
+      <div class="break-case-subtitle">25岁 · 未婚未育 · 痛经5年 · 花剥苔</div>
+      <div class="break-doctor">东莞市虎门中医院 · 胡丽华 副主任医师</div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 7: CASE 1 FIRST VISIT ===== -->
+  <div class="slide" id="slide-7">
+    <div class="slide-std">
+      <div class="slide-header" style="background:linear-gradient(135deg,#922b21,#c0392b)">
+        <div class="slide-header-title">病例一：基本情况与首诊辨证</div>
+        <div class="slide-header-tag">脾阴不足 · 不荣则痛</div>
+      </div>
+      <div class="slide-body">
+        <div class="cols-2" style="gap:8px">
+          <div>
+            <div class="sub-label">① 患者概况</div>
+            <div class="card card-red" style="margin-bottom:8px">
+              <div class="card-body">
+                <ul>
+                  <li>某女，<strong>25岁</strong>，未婚未育</li>
+                  <li>主诉：经行腹痛反复<strong>5年余</strong>，需反复服止痛药</li>
+                  <li>月经：周期约6/30天，量中，色暗红，无明显血块</li>
+                  <li>伴随：经前/经期下腹痛、腰痛伴便意感；手脚易出汗怕热；经前急躁</li>
+                  <li>睡眠：入睡困难，易醒</li>
+                  <li>舌脉：舌红，<strong>地图舌/花剥苔</strong>，脉弦细</li>
+                </ul>
+              </div>
+            </div>
+            <div class="sub-label">③ 首诊思路</div>
+            <div class="card" style="border-left-color:#c9a84c">
+              <div class="card-body">
+                <ul>
+                  <li>痛经病机既有"不通则痛"，亦有<strong>"不荣则痛"</strong></li>
+                  <li>花剥苔提示脾胃阴液不足，胞脉失于濡养</li>
+                  <li>经前急躁、入睡困难提示情志与心神因素参与</li>
+                  <li>先从扶正入手，为后续分期调治打基础</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="sub-label">② 首诊（2025年6月13日）</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+              <div class="stat-box"><div class="stat-num" style="font-size:50px;color:var(--cinnabar)">脾阴虚证</div><div class="stat-label">辨证结果</div></div>
+              <div class="stat-box"><div class="stat-num" style="font-size:50px;color:var(--jade)">补脾阴</div><div class="stat-label">治法</div></div>
+            </div>
+            <div class="card card-jade">
+              <div class="card-title"><span class="icon icon-jade">🌿</span>首诊方药</div>
+              <div class="card-body">
+                <div style="font-weight:600;font-size:30px;color:var(--jade);margin-bottom:8px">参苓白术散加减</div>
+                <div>
+                  <span class="medicine-chip">桔梗</span><span class="medicine-chip">党参</span><span class="medicine-chip">薏苡仁</span><span class="medicine-chip">砂仁</span><span class="medicine-chip">炙甘草</span><span class="medicine-chip">莲子</span><span class="medicine-chip">茯苓</span><span class="medicine-chip">白术</span><span class="medicine-chip">白扁豆</span><span class="medicine-chip">山药</span><span class="medicine-chip">干姜</span><span class="medicine-chip">陈皮</span>
+                </div>
+              </div>
+            </div>
+            <div class="card mt12" style="border-left-color:#c9a84c;background:var(--pale-gold)">
+              <div class="card-title" style="font-size:30px"><span class="icon icon-gold">🔥</span>外治</div>
+              <div class="card-body">下腹部艾灸，每周1次</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 8: CASE 1 FOLLOW-UP ===== -->
+  <div class="slide" id="slide-8">
+    <div class="slide-std">
+      <div class="slide-header" style="background:linear-gradient(135deg,#922b21,#c0392b)">
+        <div class="slide-header-title">病例一：痛经分期调治过程（复诊1—3）</div>
+        <div class="slide-header-tag">动态辨证 · 分期施治</div>
+      </div>
+      <div class="slide-body">
+        <div class="cols-3" style="gap:10px">
+          <div class="timeline-item" style="border-top-color:#c0392b">
+            <div class="timeline-label" style="color:#c0392b">二诊 · 2025.06.26</div>
+            <div class="timeline-content">
+              <ul>
+                <li>经前一周，无明显腹痛，咽干咽痛</li>
+                <li>舌红，地图舌/剥苔仍在，脉滑</li>
+              </ul>
+              <div class="tag-row" style="margin:8px 0">
+                <span class="tag tag-red">阴虚血瘀</span>
+                <span class="tag tag-jade">滋阴清热化瘀</span>
+              </div>
+              <div style="font-size:clamp(19px, 1.88vw, 24px);color:var(--teal);font-weight:600;margin-bottom:4px">血府逐瘀汤加减</div>
+              <div><span class="medicine-chip">川芎</span><span class="medicine-chip">桔梗</span><span class="medicine-chip">当归</span><span class="medicine-chip">川牛膝</span><span class="medicine-chip">桃仁</span><span class="medicine-chip">延胡索</span><span class="medicine-chip">赤芍</span><span class="medicine-chip">生地黄</span><span class="medicine-chip">柴胡</span><span class="medicine-chip">白芍</span><span class="medicine-chip">细辛</span><span class="medicine-chip">益母草</span></div>
+            </div>
+          </div>
+          <div class="timeline-item" style="border-top-color:#1b6ca8">
+            <div class="timeline-label" style="color:#1b6ca8">三诊 · 2025.07.11</div>
+            <div class="timeline-content">
+              <ul>
+                <li>LMP：7月1日，7–8天净</li>
+                <li>经期仅服止痛药<strong>1次</strong>（进步！）</li>
+                <li>下腹偏凉、双脚麻木感</li>
+                <li>经前不再明显急躁 ✓</li>
+                <li>地图舌<strong>明显好转</strong>，已有新生舌苔</li>
+              </ul>
+              <div class="tag-row" style="margin:8px 0">
+                <span class="tag tag-teal">心脾两虚</span>
+                <span class="tag tag-jade">益气补脾养心</span>
+              </div>
+              <div style="font-size:clamp(19px, 1.88vw, 24px);color:var(--teal);font-weight:600;margin-bottom:4px">归脾汤加减</div>
+              <div><span class="medicine-chip">白术</span><span class="medicine-chip">木香</span><span class="medicine-chip">远志</span><span class="medicine-chip">黄芪</span><span class="medicine-chip">党参</span><span class="medicine-chip">当归</span><span class="medicine-chip">茯神</span><span class="medicine-chip">酸枣仁</span><span class="medicine-chip">巴戟天</span><span class="medicine-chip">蒲黄</span><span class="medicine-chip">五灵脂</span></div>
+            </div>
+          </div>
+          <div class="timeline-item" style="border-top-color:#2d6a4f">
+            <div class="timeline-label" style="color:#2d6a4f">四诊 · 2025.07.26</div>
+            <div class="timeline-content">
+              <ul>
+                <li>经前一周，无特殊不适</li>
+                <li>舌暗红，苔薄白，脉弦细</li>
+                <li>心脾两虚为本，经前可因势利导</li>
+              </ul>
+              <div class="tag-row" style="margin:8px 0">
+                <span class="tag tag-jade">温经养血</span>
+                <span class="tag tag-gold">化瘀止痛</span>
+              </div>
+              <div style="font-size:clamp(19px, 1.88vw, 24px);color:var(--teal);font-weight:600;margin-bottom:4px">少腹逐瘀汤加减</div>
+              <div><span class="medicine-chip">川芎</span><span class="medicine-chip">蒲黄</span><span class="medicine-chip">五灵脂</span><span class="medicine-chip">白术</span><span class="medicine-chip">小茴香</span><span class="medicine-chip">生姜</span><span class="medicine-chip">肉桂</span><span class="medicine-chip">延胡索</span><span class="medicine-chip">当归</span><span class="medicine-chip">没药</span><span class="medicine-chip">酸枣仁</span><span class="medicine-chip">巴戟天</span></div>
+              <div style="font-size:clamp(19px, 1.88vw, 24px);color:var(--gold);margin-top:6px">🔥 艾灸1次</div>
+            </div>
+          </div>
+        </div>
+        <div class="footnote">提示：治疗中随经期变化与证候变化动态调整方药，体现分期辨治思路。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 9: CASE 1 OUTCOME ===== -->
+  <div class="slide" id="slide-9">
+    <div class="slide-std">
+      <div class="slide-header" style="background:linear-gradient(135deg,#922b21,#c0392b)">
+        <div class="slide-header-title">病例一：后续转归、按语与经典依据</div>
+        <div class="slide-header-tag">渐入佳境 · 花剥苔消 · 痛经愈</div>
+      </div>
+      <div class="slide-body">
+        <div class="cols-2" style="gap:8px">
+          <div>
+            <div class="sub-label">后续诊次</div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div class="timeline-item" style="border-top-color:#c9a84c">
+                <div class="timeline-label" style="color:#8b4513">五诊 · 2025.08.08</div>
+                <div class="timeline-content">
+                  <ul>
+                    <li>LMP：7月31日，<strong>无需止痛药</strong>，轻微不适</li>
+                    <li>花剥苔<strong>完全消失</strong>，舌淡红苔薄白</li>
+                    <li>辨证：中虚 | 治：黄芪建中汤加减 + 麦芽糖</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="timeline-item" style="border-top-color:#2d6a4f">
+                <div class="timeline-label" style="color:#2d6a4f">六诊 · 2025.08.23</div>
+                <div class="timeline-content">
+                  <ul>
+                    <li>睡眠较前改善，纳可</li>
+                    <li>续黄芪建中汤加减（加党参、巴戟天等）</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="timeline-item" style="border-top-color:#1b6ca8">
+                <div class="timeline-label" style="color:#1b6ca8">七诊 · 2025.09.05 🎉</div>
+                <div class="timeline-content">
+                  <ul>
+                    <li>LMP：8月25日，<strong>无腹痛</strong>，仅稍腰酸</li>
+                    <li>下腹凉、双脚麻木消失</li>
+                    <li>睡眠改善，面色红润有光泽</li>
+                    <li>经前不再明显急躁 ✓</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="sub-label">病例体会</div>
+            <div class="card card-red" style="margin-bottom:8px">
+              <div class="card-body">
+                <ul>
+                  <li>本案痛经并非单一寒凝血瘀，而是虚实夹杂、寒热错杂</li>
+                  <li>花剥苔是辨证<strong>关键线索</strong>，提示脾阴不足</li>
+                  <li>治疗：脾阴不足→心脾两虚→中虚偏寒，逐步显露转化</li>
+                  <li>疼痛、睡眠、情绪、舌象与整体状态均得到改善</li>
+                </ul>
+              </div>
+            </div>
+            <div class="sub-label">经典依据</div>
+            <div class="card" style="border-left-color:#c9a84c;background:var(--pale-gold)">
+              <div class="card-body">
+                <ul>
+                  <li>参苓白术散：《太平惠民和剂局方》</li>
+                  <li>归脾汤：严用和《济生方》</li>
+                  <li>黄芪建中汤：《伤寒论》建中法体系</li>
+                  <li>血府逐瘀汤、少腹逐瘀汤：王清任《医林改错》</li>
+                  <li>补脾阴论述：周慎斋《慎斋遗书》、缪仲淳《先醒斋医学广笔记》</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 10: CASE 2 BREAK ===== -->
+  <div class="slide" id="slide-10">
+    <div class="slide-break" style="background:linear-gradient(135deg,#0d3522,#1b4332,#1e2d3d)">
+      <div class="break-number" style="color:rgba(45,106,79,0.15)">02</div>
+      <div class="break-case-label" style="color:#2d6a4f">CASE TWO · 病例二</div>
+      <div class="break-case-title">复发性带下病（反复念珠菌阴道炎）<br>从脾阳不足、水湿下注论治<br>兼顾生活方式与情志疑虑</div>
+      <div class="break-case-subtitle">28岁 · 银行职员 · 带下病1年 · 脾虚湿困</div>
+      <div class="break-doctor">东莞市虎门中医院 · 胡丽华 副主任医师</div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 11: CASE 2 FIRST VISIT ===== -->
+  <div class="slide" id="slide-11">
+    <div class="slide-std">
+      <div class="slide-header" style="background:linear-gradient(135deg,#1b4332,#2d6a4f)">
+        <div class="slide-header-title">病例二：基本情况与首诊</div>
+        <div class="slide-header-tag">脾虚湿困 · 温阳健脾化湿</div>
+      </div>
+      <div class="slide-body">
+        <div class="cols-2" style="gap:8px">
+          <div>
+            <div class="sub-label">① 患者概况与生活背景</div>
+            <div class="card card-jade" style="margin-bottom:8px">
+              <div class="card-body">
+                <ul>
+                  <li>某女，<strong>28岁</strong>，银行职员，未婚，有性生活，平素酷爱跳舞</li>
+                  <li>业余拍跳舞视频、常熬夜至深夜直播；精神兴奋久久不能入睡</li>
+                  <li>白天依赖<strong>冰美式</strong>提神；长期减少米面摄入保持身材</li>
+                  <li>主诉：反复外阴瘙痒、带下异常<strong>1年余</strong></li>
+                  <li>复发特点：潮湿天气、月经前、性生活后易复发</li>
+                  <li>反复发作后产生<strong>疑病、猜疑、紧张</strong></li>
+                </ul>
+              </div>
+            </div>
+            <div class="sub-label">② 既往检查</div>
+            <div class="card" style="border-left-color:#aaa">
+              <div class="card-body">
+                <ul>
+                  <li>外院已查支原体、衣原体、淋球菌、梅毒及艾滋病等</li>
+                  <li>多次西药治疗后仍反复</li>
+                  <li>后期曾自行网购药、反复冲洗阴道</li>
+                  <li>因病程迁延转求中药调治</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="sub-label">③ 首诊（2023年3月20日）</div>
+            <div class="card card-jade" style="margin-bottom:6px">
+              <div class="card-body">
+                <ul>
+                  <li><strong>主症：</strong>带下量多，分泌物凝乳状，阴痒明显</li>
+                  <li><strong>兼症：</strong>小肚子冷，面色萎黄，脱发，精神不济，纳少，便烂，肠鸣，乏力，头昏</li>
+                  <li><strong>新冠后：</strong>咳嗽、清痰、气短</li>
+                  <li><strong>月经：</strong>30–45天，经量偏多，7天净</li>
+                  <li><strong>舌脉：</strong>舌淡，苔薄白，脉沉弦细弱</li>
+                </ul>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+              <div class="stat-box"><div class="stat-num" style="font-size:40px;color:var(--jade)">脾虚湿困</div><div class="stat-label">中医辨证</div></div>
+              <div class="stat-box"><div class="stat-num" style="font-size:40px;color:var(--teal)">温阳健脾</div><div class="stat-label">治法</div></div>
+            </div>
+            <div class="card card-jade">
+              <div class="card-title"><span class="icon icon-jade">🌿</span>苓桂术甘汤加减</div>
+              <div><span class="medicine-chip">茯苓</span><span class="medicine-chip">桂枝</span><span class="medicine-chip">炒白术</span><span class="medicine-chip">炙甘草</span><span class="medicine-chip">芡实</span><span class="medicine-chip">苍术</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 12: CASE 2 FOLLOW-UP ===== -->
+  <div class="slide" id="slide-12">
+    <div class="slide-std">
+      <div class="slide-header" style="background:linear-gradient(135deg,#1b4332,#2d6a4f)">
+        <div class="slide-header-title">病例二：随访变化、调护要点与疗效观察</div>
+        <div class="slide-header-tag">药物治疗 + 调护干预 · 缺一不可</div>
+      </div>
+      <div class="slide-body">
+        <div class="cols-2" style="gap:8px">
+          <div>
+            <div class="sub-label">复诊变化</div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div class="timeline-item" style="border-top-color:#2d6a4f">
+                <div class="timeline-label" style="color:#2d6a4f">二诊（1周后）</div>
+                <div class="timeline-content">
+                  <ul>
+                    <li>白带量<strong>减半</strong>，肠鸣消失，大便成形</li>
+                    <li>咳嗽清痰减轻；复查念珠菌<strong>转阴</strong></li>
+                    <li>去芡实、苍术，加乌贼骨、白果，续7剂</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="timeline-item" style="border-top-color:#1b6ca8">
+                <div class="timeline-label" style="color:#1b6ca8">三诊（2023年5月8日）</div>
+                <div class="timeline-content">
+                  <ul>
+                    <li>阴痒明显好转，作息逐渐规律</li>
+                    <li>白天不再依赖咖啡提神</li>
+                    <li>因不便频繁就诊，改<strong>代茶饮巩固</strong></li>
+                  </ul>
+                  <div style="margin-top:6px;background:var(--pale-gold);border-radius:4px;padding:8px;font-size:27px">
+                    茯苓15g · 桂枝10g · 炒白术10g · 炙甘草5g<br><em style="color:#8b4513">养生壶代茶饮</em>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="sub-label">调护与情志疏导</div>
+            <div class="card card-jade" style="margin-bottom:8px">
+              <div class="card-body">
+                <ul>
+                  <li>耐心说明：反复发作与作息、饮食、局部环境密切相关</li>
+                  <li>停止熬夜直播与深夜高强度运动，帮助<strong>阳气收藏</strong></li>
+                  <li>规律三餐，适当增加米面摄入，减少过度节食</li>
+                  <li>清晨避免冰美式，减少<strong>寒凉伤中</strong></li>
+                  <li>不要过度冲洗阴道，重视规范治疗与复查</li>
+                  <li>缓解紧张、疑病及对伴侣的过度猜疑</li>
+                </ul>
+              </div>
+            </div>
+            <div class="sub-label">疗效观察</div>
+            <div class="highlight-box">
+              <ul style="list-style:none">
+                <li style="color:rgba(255,255,255,0.85);margin-bottom:5px">✅ 带下量明显减少，瘙痒显著缓解</li>
+                <li style="color:rgba(255,255,255,0.85);margin-bottom:5px">✅ 大便、肠鸣、小腹冷、咳痰等同步改善</li>
+                <li style="color:rgba(255,255,255,0.85);margin-bottom:5px">✅ 生活方式调整后复发诱因减少</li>
+                <li style="color:var(--gold)">→ "药物治疗 + 调护干预"缺一不可</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 13: CASE 2 PATHOMECHANISM ===== -->
+  <div class="slide" id="slide-13">
+    <div class="slide-std">
+      <div class="slide-header" style="background:linear-gradient(135deg,#1b4332,#2d6a4f)">
+        <div class="slide-header-title">病例二：病机分析、方义与经典依据</div>
+        <div class="slide-header-tag">温药和之 · 治带先治湿 · 治湿先治脾</div>
+      </div>
+      <div class="slide-body">
+        <div class="cols-3" style="gap:10px">
+          <div class="card card-jade">
+            <div class="card-title"><span class="icon icon-jade">🔬</span>病机分析</div>
+            <div class="card-body">
+              <ul>
+                <li>中医属"带下病"，《傅青主女科》："<em>夫带下俱是湿症</em>"</li>
+                <li>白带凝乳状、阴痒反复，兼小腹冷、纳少便烂，提示<strong>脾阳虚弱、湿浊下注</strong></li>
+                <li>新冠后咳嗽清痰气短，为水湿内停、痰饮内生之象</li>
+                <li>白带与痰饮病名不同，但病机同源：<strong>脾阳不足→运化失司→水湿留滞</strong></li>
+                <li>熬夜、深夜运动、冰饮、节食，共同损伤脾阳</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-teal">
+            <div class="card-title"><span class="icon icon-teal">⚗️</span>苓桂术甘汤方义</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>茯苓：</strong>利水渗湿，健脾助运</li>
+                <li><strong>桂枝：</strong>温阳化气，推动中焦气化</li>
+                <li><strong>白术：</strong>健脾燥湿，恢复运化功能</li>
+                <li><strong>炙甘草：</strong>益气和中，调和诸药</li>
+              </ul>
+              <div class="quote-box" style="margin-top:10px;font-size:27px">
+                方证核心：温阳化饮，健脾利湿；既去已成之湿，又减新湿之源。
+              </div>
+            </div>
+          </div>
+          <div class="card card-red">
+            <div class="card-title"><span class="icon icon-red">📚</span>经典依据与临床启示</div>
+            <div class="card-body">
+              <ul>
+                <li>《金匮要略·妇人杂病》："妇人之病，因虚，积冷，结气"</li>
+                <li>《金匮要略》："病痰饮者，<strong>当以温药和之</strong>"</li>
+                <li>复发性念珠菌阴道炎不能只盯局部感染，更要寻找<strong>"生湿之源"</strong></li>
+                <li>规范用药、生活方式调整、情志疏导三者并重，方能减少复发</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 14: CASE 2 EMOTIONAL ===== -->
+  <div class="slide" id="slide-14">
+    <div class="slide-std">
+      <div class="slide-header" style="background:linear-gradient(135deg,#1b4332,#2d6a4f)">
+        <div class="slide-header-title">病例二：情志调治与基层健康宣教体会</div>
+        <div class="slide-header-tag">解释病机 · 减少恐惧 · 提升依从</div>
+      </div>
+      <div class="slide-body">
+        <div class="cols-2" style="gap:8px">
+          <div class="card card-jade">
+            <div class="card-title"><span class="icon icon-jade">💭</span>情志问题如何参与病程</div>
+            <div class="card-body">
+              <ul>
+                <li>反复发作后，从"小毛病"发展为长期<strong>紧张与疑病</strong></li>
+                <li>外阴瘙痒和带下异常具有隐私性，容易产生<strong>羞耻感、焦虑和自责</strong></li>
+                <li>伴侣关系被疾病反复牵连，怀疑、猜测和冲突增加</li>
+                <li>焦虑与睡眠不足相互影响，进一步削弱正气恢复</li>
+                <li>基层医生需要把疾病机制解释清楚，减少不必要恐惧</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-teal">
+            <div class="card-title"><span class="icon icon-teal">📢</span>基层宣教要点</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>解释：</strong>反复念珠菌感染不等于"卫生差"，也不必然说明伴侣不洁</li>
+                <li><strong>强调：</strong>抗真菌治疗有效，但复发与体质、局部环境、生活习惯密切相关</li>
+                <li><strong>纠偏：</strong>避免反复自行冲洗，避免网上反复购药乱用</li>
+                <li><strong>调护：</strong>规律作息、减少冰饮、合理主食摄入、避免熬夜和过度节食</li>
+                <li><strong>随访：</strong>症状缓解后仍需巩固调理与复查</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 15: CASE 3 BREAK ===== -->
+  <div class="slide" id="slide-15">
+    <div class="slide-break" style="background:linear-gradient(135deg,#1a3050,#154478,#1a3050)">
+      <div class="break-number" style="color:rgba(27,108,168,0.15)">03</div>
+      <div class="break-case-label" style="color:#1b6ca8">CASE THREE · 病例三</div>
+      <div class="break-case-title">卵巢巧克力囊肿<br>气滞血瘀、癥积内结<br>从症状改善到指标稳定的长期管理</div>
+      <div class="break-case-subtitle">已婚育 · 无生育需求 · 拒绝激素 · 中药消癥</div>
+      <div class="break-doctor">东莞市虎门中医院 · 胡丽华 副主任医师</div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 16: CASE 3 FIRST VISIT ===== -->
+  <div class="slide" id="slide-16">
+    <div class="slide-std">
+      <div class="slide-header" style="background:linear-gradient(135deg,#154478,#1b6ca8)">
+        <div class="slide-header-title">病例三：卵巢巧克力囊肿（基本情况与首诊）</div>
+        <div class="slide-header-tag">气滞血瘀型 · 桂枝茯苓丸</div>
+      </div>
+      <div class="slide-body">
+        <div class="cols-2" style="gap:8px">
+          <div>
+            <div class="sub-label">① 患者概况</div>
+            <div class="card card-teal" style="margin-bottom:8px">
+              <div class="card-body">
+                <ul>
+                  <li>某女，已婚，育有1子，<strong>现无生育需求</strong></li>
+                  <li>症状：痛经，痛甚需服止痛药；经前乳胀</li>
+                  <li>特殊病史：2020年、2022年各有一次<strong>月经期咯血</strong>，胸部CT未见异常</li>
+                  <li>2023年11月体检发现<strong>卵巢巧克力囊肿</strong></li>
+                  <li>西医建议地诺孕素，患者<strong>担心副作用拒绝接受</strong>，转求中医</li>
+                </ul>
+              </div>
+            </div>
+            <div class="sub-label">② 首诊（2024年5月16日）</div>
+            <div class="card" style="border-left-color:#1b6ca8">
+              <div class="card-body">
+                <ul>
+                  <li>LMP：5月4日，经期6天，量中，血块，痛经明显需服止痛药</li>
+                  <li>经前乳胀明显，面色偏暗，大便偏硬</li>
+                  <li>舌暗红，苔白，脉弦细</li>
+                  <li>妇检：右侧附件区约4cm×3cm囊性包块，活动欠佳</li>
+                  <li>彩超：右侧稠液性包块<strong>40×36×33mm</strong></li>
+                  <li>CA125：<strong>52.75U/ml</strong></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="sub-label">③ 首诊治法与方药</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+              <div class="stat-box"><div class="stat-num" style="font-size:36px;color:var(--teal)">肠覃（气滞血瘀）</div><div class="stat-label">中医诊断</div></div>
+              <div class="stat-box"><div class="stat-num" style="font-size:36px;color:var(--cinnabar)">理气活血消癥</div><div class="stat-label">治法</div></div>
+            </div>
+            <div class="card card-teal">
+              <div class="card-title"><span class="icon icon-teal">⚗️</span>桂枝茯苓丸加减</div>
+              <div class="card-body" style="margin-bottom:8px">
+                <div><span class="medicine-chip">桂枝</span><span class="medicine-chip">茯苓</span><span class="medicine-chip">桃仁</span><span class="medicine-chip">赤芍</span><span class="medicine-chip">牡丹皮</span></div>
+                <div style="margin-top:4px"><span class="medicine-chip">三棱</span><span class="medicine-chip">莪术</span><span style="font-size:clamp(18px, 1.65vw, 22px);color:#888;margin-left:4px">（破血消癥）</span></div>
+                <div style="margin-top:4px"><span class="medicine-chip">水蛭</span><span class="medicine-chip">土鳖虫</span><span style="font-size:clamp(18px, 1.65vw, 22px);color:#888;margin-left:4px">（虫类药搜剔络瘀）</span></div>
+                <div style="margin-top:4px"><span class="medicine-chip">牡蛎</span><span class="medicine-chip">益母草</span><span class="medicine-chip">黄芪</span><span class="medicine-chip">鸡内金</span><span class="medicine-chip">炙甘草</span></div>
+              </div>
+            </div>
+            <div class="quote-box mt12" style="font-size:27px">
+              《金匮要略》："妇人宿有癥病……当下其癥，<strong>桂枝茯苓丸主之</strong>。"
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 17: CASE 3 FOLLOW-UP 1 ===== -->
+  <div class="slide" id="slide-17">
+    <div class="slide-std">
+      <div class="slide-header" style="background:linear-gradient(135deg,#154478,#1b6ca8)">
+        <div class="slide-header-title">病例三：复诊变化（一）症状改善与方药调整</div>
+        <div class="slide-header-tag">症状先行改善 · 血块减少 · 痛经渐轻</div>
+      </div>
+      <div class="slide-body">
+        <div class="cols-2" style="gap:8px">
+          <div class="timeline-item" style="border-top-color:#1b6ca8">
+            <div class="timeline-label" style="color:#1b6ca8">二诊 · 2024年6月17日</div>
+            <div class="timeline-content">
+              <ul>
+                <li>LMP：6月7日，经期5天，量中等，<strong>血块减少</strong></li>
+                <li>痛经略减轻；<strong>坚持未服止痛药</strong> ✓</li>
+                <li>经前少许乳胀；面色偏暗，大便较前好转</li>
+                <li>复查：囊肿39×35×32mm；CA125：52.50U/ml</li>
+              </ul>
+              <div class="card mt12 card-teal" style="padding:12px">
+                <div style="font-size:clamp(19px, 1.88vw, 24px);color:var(--teal);font-weight:600;margin-bottom:4px">方药调整：上方加瞿麦50g</div>
+                <div style="font-size:clamp(18px, 1.65vw, 22px);color:#555">以利水消癥，增强活血通经与利水消肿之力</div>
+              </div>
+            </div>
+          </div>
+          <div class="timeline-item" style="border-top-color:#2d6a4f">
+            <div class="timeline-label" style="color:#2d6a4f">三诊 · 2024年7月16日</div>
+            <div class="timeline-content">
+              <ul>
+                <li>LMP：7月6日，经期6天，少许血块</li>
+                <li>痛经<strong>明显减轻</strong>，仅轻微疼痛，<strong>不需止痛药</strong></li>
+                <li>面色较前红润，纳眠可，二便调</li>
+                <li>舌偏暗，苔白，脉弦细</li>
+              </ul>
+              <div class="highlight-box mt12" style="padding:12px">
+                <ul style="list-style:none">
+                  <li style="color:rgba(255,255,255,0.85);font-size:27px;margin-bottom:4px">✅ 痛经"需止痛药"→"不需止痛药"，气血运行渐畅</li>
+                  <li style="color:rgba(255,255,255,0.85);font-size:27px;margin-bottom:4px">✅ 血块减少、乳胀减轻，气滞血瘀有所缓解</li>
+                  <li style="color:var(--gold);font-size:27px">→ 症状与生活质量先行改善，守方续开10剂</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 18: CASE 3 FOLLOW-UP 2 ===== -->
+  <div class="slide" id="slide-18">
+    <div class="slide-std">
+      <div class="slide-header" style="background:linear-gradient(135deg,#154478,#1b6ca8)">
+        <div class="slide-header-title">病例三：复诊变化（二）长期随访与客观指标</div>
+        <div class="slide-header-tag">CA125下降 · 囊肿缩小 · 患者信心增强</div>
+      </div>
+      <div class="slide-body">
+        <div class="cols-2" style="gap:8px">
+          <div class="timeline-item" style="border-top-color:#c9a84c">
+            <div class="timeline-label" style="color:#8b4513">四诊 · 2024年12月12日</div>
+            <div class="timeline-content">
+              <ul>
+                <li>上诊后无明显痛经，自觉有效</li>
+                <li>每月经后<strong>自行照方抓药</strong>口服10剂</li>
+                <li>LMP：12月5日，<strong>无痛经，无明显血块</strong></li>
+                <li>彩超：囊肿40×33×33mm（未明显缩小）</li>
+                <li>CA125：<strong>40.75U/ml，已降至正常范围</strong> ✅</li>
+                <li>虽囊肿未明显缩小，但患者信心增强，要求继续服药</li>
+              </ul>
+              <div class="card mt12" style="border-left-color:#c9a84c;background:var(--pale-gold);padding:10px">
+                <div style="font-size:clamp(19px, 1.88vw, 24px);color:#8b4513">嘱半年后复查妇科彩超及CA125</div>
+              </div>
+            </div>
+          </div>
+          <div class="timeline-item" style="border-top-color:#2d6a4f">
+            <div class="timeline-label" style="color:#2d6a4f">五诊 · 2025年6月25日 🎉</div>
+            <div class="timeline-content">
+              <ul>
+                <li>LMP：6月10日，量色质正常，<strong>无明显痛经</strong></li>
+                <li>面色尚红润，纳眠可，二便调</li>
+                <li>彩超：右侧卵巢稠液性结构<strong>32×33×29mm</strong></li>
+                <li>CA125：<strong>33.20U/ml</strong></li>
+              </ul>
+              <div class="highlight-box mt12" style="padding:12px">
+                <ul style="list-style:none">
+                  <li style="color:rgba(255,255,255,0.85);font-size:27px;margin-bottom:3px">✅ 疼痛、血块、经前乳胀基本消失</li>
+                  <li style="color:rgba(255,255,255,0.85);font-size:27px;margin-bottom:3px">✅ CA125持续下降并稳定于正常范围</li>
+                  <li style="color:var(--gold);font-size:27px">✅ 囊肿缩小缓慢，但病情活性与症状均趋于稳定</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 19: CASE 3 DATA CHART ===== -->
+  <div class="slide" id="slide-19">
+    <div class="slide-std">
+      <div class="slide-header" style="background:linear-gradient(135deg,#154478,#1b6ca8)">
+        <div class="slide-header-title">病例三：疗效观察——症状、CA125与囊肿大小变化</div>
+        <div class="slide-header-tag">客观指标追踪</div>
+      </div>
+      <div class="slide-body">
+        <div class="cols-2" style="gap:8px">
+          <div>
+            <div class="section-title">CA125变化（U/ml）</div>
+            <div class="bar-chart">
+              <div class="bar-row">
+                <div class="bar-label">初诊</div>
+                <div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#c0392b,#e74c3c)">52.75</div></div>
+                <div class="bar-val">52.75</div>
+              </div>
+              <div class="bar-row">
+                <div class="bar-label">二诊</div>
+                <div class="bar-track"><div class="bar-fill" style="width:99%;background:linear-gradient(90deg,#c0392b,#e74c3c)">52.5</div></div>
+                <div class="bar-val">52.5</div>
+              </div>
+              <div class="bar-row">
+                <div class="bar-label">四诊</div>
+                <div class="bar-track"><div class="bar-fill" style="width:77%;background:linear-gradient(90deg,#e67e22,#f39c12)">40.75</div></div>
+                <div class="bar-val">40.75</div>
+              </div>
+              <div class="bar-row">
+                <div class="bar-label">五诊</div>
+                <div class="bar-track"><div class="bar-fill" style="width:63%;background:linear-gradient(90deg,#27ae60,#2ecc71)">33.20</div></div>
+                <div class="bar-val">33.20</div>
+              </div>
+            </div>
+            <div style="font-size:clamp(18px, 1.65vw, 22px);color:#888;margin-top:8px">*正常参考值 &lt;35 U/ml</div>
+          </div>
+          <div>
+            <div class="section-title">囊肿最大径变化（mm）</div>
+            <div class="bar-chart">
+              <div class="bar-row">
+                <div class="bar-label">初诊</div>
+                <div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#1b6ca8,#2980b9)">40mm</div></div>
+                <div class="bar-val">40mm</div>
+              </div>
+              <div class="bar-row">
+                <div class="bar-label">二诊</div>
+                <div class="bar-track"><div class="bar-fill" style="width:97%;background:linear-gradient(90deg,#1b6ca8,#2980b9)">39mm</div></div>
+                <div class="bar-val">39mm</div>
+              </div>
+              <div class="bar-row">
+                <div class="bar-label">四诊</div>
+                <div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#1b6ca8,#2980b9)">40mm</div></div>
+                <div class="bar-val">40mm</div>
+              </div>
+              <div class="bar-row">
+                <div class="bar-label">五诊</div>
+                <div class="bar-track"><div class="bar-fill" style="width:80%;background:linear-gradient(90deg,#27ae60,#2ecc71)">32mm</div></div>
+                <div class="bar-val">32mm</div>
+              </div>
+            </div>
+            <div class="highlight-box" style="margin-top:12px;padding:12px">
+              <div style="color:var(--gold);font-size:27px;margin-bottom:4px">关键启示</div>
+              <div style="color:rgba(255,255,255,0.8);font-size:27px">症状改善（早）→ CA125下降（中）→ 囊肿缩小（晚）<br>三者改善顺序不同步，需向患者充分解释。</div>
+            </div>
+          </div>
+        </div>
+        <div class="cols-5" style="gap:10px;margin-top:16px">
+          <div class="stat-box" style="border-top:2px solid #c0392b"><div class="stat-num" style="font-size:clamp(22px, 2.1vw, 27px);color:#c0392b">初诊</div><div class="stat-label">痛经+需止痛药</div><div class="stat-sub">血块+乳胀</div></div>
+          <div class="stat-box" style="border-top:2px solid #e67e22"><div class="stat-num" style="font-size:clamp(22px, 2.1vw, 27px);color:#e67e22">二诊</div><div class="stat-label">血块减少</div><div class="stat-sub">未服止痛药</div></div>
+          <div class="stat-box" style="border-top:2px solid #f39c12"><div class="stat-num" style="font-size:clamp(22px, 2.1vw, 27px);color:#f39c12">三诊</div><div class="stat-label">轻微痛经</div><div class="stat-sub">不需止痛药</div></div>
+          <div class="stat-box" style="border-top:2px solid #2ecc71"><div class="stat-num" style="font-size:clamp(22px, 2.1vw, 27px);color:#2ecc71">四诊</div><div class="stat-label">无痛经</div><div class="stat-sub">CA125正常</div></div>
+          <div class="stat-box" style="border-top:2px solid #27ae60"><div class="stat-num" style="font-size:clamp(22px, 2.1vw, 27px);color:#27ae60">五诊</div><div class="stat-label">量色质正常</div><div class="stat-sub">囊肿32mm</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 20: CASE 3 MECHANISM ===== -->
+  <div class="slide" id="slide-20">
+    <div class="slide-std">
+      <div class="slide-header" style="background:linear-gradient(135deg,#154478,#1b6ca8)">
+        <div class="slide-header-title">病例三：病机分析、方义与经典依据</div>
+        <div class="slide-header-tag">气滞血瘀 · 攻补兼施 · 血水同治</div>
+      </div>
+      <div class="slide-body">
+        <div class="cols-3" style="gap:10px">
+          <div class="card card-teal">
+            <div class="card-title"><span class="icon icon-teal">🔬</span>病机分析</div>
+            <div class="card-body">
+              <ul>
+                <li>痛经、经前乳胀、脉弦→<strong>肝气郁滞</strong></li>
+                <li>经血有块、舌质暗红、面色偏暗、包块活动欠佳→<strong>瘀血内停，胞脉阻滞</strong></li>
+                <li>气滞则血行不畅，瘀阻胞宫→<strong>不通则痛</strong></li>
+                <li>气滞血瘀日久，结聚成癥→<strong>卵巢囊肿</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-teal">
+            <div class="card-title"><span class="icon icon-teal">⚗️</span>桂枝茯苓丸加减方义</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>桂枝茯苓丸基础：</strong>活血化瘀，缓消癥块</li>
+                <li><strong>三棱、莪术：</strong>破血消癥，针对有形癥块</li>
+                <li><strong>水蛭、土鳖虫：</strong>虫类药搜剔络脉，破久瘀顽结</li>
+                <li><strong>鸡内金：</strong>健胃消食，兼化瘀散结</li>
+                <li><strong>牡蛎：</strong>软坚散结</li>
+                <li><strong>益母草：</strong>活血调经，利水消肿</li>
+                <li><strong>黄芪：</strong>补气扶正，气旺则血行</li>
+                <li><strong>瞿麦：</strong>活血通经，体现<strong>血水同治</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-red">
+            <div class="card-title"><span class="icon icon-red">📚</span>经典依据与治疗特点</div>
+            <div class="card-body">
+              <div class="quote-box" style="margin-bottom:10px;font-size:27px">《医学入门·妇人门》："善治癥瘕者，调其气而破其血。"</div>
+              <ul>
+                <li><strong>攻补兼施：</strong>破瘀消癥配伍黄芪扶正</li>
+                <li><strong>动静结合：</strong>经后集中用药</li>
+                <li><strong>气血同治：</strong>理气活血并行</li>
+                <li><strong>血水同治：</strong>活血配伍利水药</li>
+                <li><strong>虫类药：</strong>搜剔络中顽瘀，针对久病癥块</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 21: CASE 3 MANAGEMENT ===== -->
+  <div class="slide" id="slide-21">
+    <div class="slide-std">
+      <div class="slide-header" style="background:linear-gradient(135deg,#154478,#1b6ca8)">
+        <div class="slide-header-title">病例三：情志因素、依从性与长期管理</div>
+        <div class="slide-header-tag">能坚持 · 能复查 · 能观察</div>
+      </div>
+      <div class="slide-body">
+        <div class="cols-2" style="gap:8px">
+          <div class="card card-teal">
+            <div class="card-title"><span class="icon icon-teal">💭</span>情志与依从性问题</div>
+            <div class="card-body">
+              <ul>
+                <li>担心地诺孕素等激素副作用，<strong>拒绝接受西医建议</strong></li>
+                <li>囊肿慢性病程，短期体积变化不明显，容易产生<strong>焦虑或放弃</strong></li>
+                <li>疼痛、经前乳胀、月经期咯血史，增强患者对疾病进展的担忧</li>
+                <li>医生需解释：症状、CA125、囊肿大小<strong>改善顺序可能不同</strong></li>
+                <li>症状改善可显著提升患者信心与治疗依从性</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-red">
+            <div class="card-title"><span class="icon icon-red">📋</span>基层长期管理要点</div>
+            <div class="card-body">
+              <ul>
+                <li>记录每次月经：周期、经期、血块、痛经程度、乳胀程度</li>
+                <li>定期复查：妇科彩超 + CA125，观察病情活性与囊肿变化</li>
+                <li>强调：巧克力囊肿缩小往往缓慢，不宜仅凭单次彩超判断无效</li>
+                <li>对不愿手术或担心激素副作用者，中医药可作为补充或替代选择</li>
+              </ul>
+              <div class="highlight-box mt12" style="text-align:center;padding:12px">
+                <strong>以"能坚持、能复查、能观察"为管理核心</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 22: CASE 4 BREAK ===== -->
+  <div class="slide" id="slide-22">
+    <div class="slide-break" style="background:linear-gradient(135deg,#1a0800,#3d1c08,#1a0800)">
+      <div class="break-number" style="color:rgba(139,69,19,0.2)">04</div>
+      <div class="break-case-label" style="color:#c9a84c">CASE FOUR · 病例四</div>
+      <div class="break-case-title">情志焦虑相关眩晕<br>虽非典型妇科病，但提示<br>情志、脾胃、痰湿与女性整体调治的相通性</div>
+      <div class="break-case-subtitle">33岁 · 产后两地分居 · 痰浊中阻 · 葛根汤合苓桂术甘汤</div>
+      <div class="break-doctor">东莞市虎门中医院 · 胡丽华 副主任医师</div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 23: CASE 4 FIRST VISIT ===== -->
+  <div class="slide" id="slide-23">
+    <div class="slide-std">
+      <div class="slide-header" style="background:linear-gradient(135deg,#3d1c08,#8b4513)">
+        <div class="slide-header-title">病例四：眩晕伴焦虑失眠（背景与首诊）</div>
+        <div class="slide-header-tag">痰浊中阻 · 无痰不作眩</div>
+      </div>
+      <div class="slide-body">
+        <div class="cols-2" style="gap:8px">
+          <div>
+            <div class="sub-label">① 患者背景与情志诱因</div>
+            <div class="card card-rust" style="margin-bottom:8px">
+              <div class="card-body">
+                <ul>
+                  <li>某女，<strong>33岁</strong></li>
+                  <li>产后回归家庭，在广州照顾孩子；丈夫在深圳工作，<strong>长期两地分居</strong></li>
+                  <li>自觉与丈夫差距越来越大，逐渐产生明显焦虑</li>
+                  <li>最初表现为失眠，随后身体越来越虚弱</li>
+                  <li>严重时<strong>无法独自照顾孩子</strong>，外出需人陪同</li>
+                  <li>主观感受：脑袋和身体"没有连在一起"，担心摔倒</li>
+                </ul>
+              </div>
+            </div>
+            <div class="sub-label">② 就诊前经过</div>
+            <div class="card" style="border-left-color:#aaa">
+              <div class="card-body">
+                <ul>
+                  <li>9月中旬午餐时自觉眩晕，天旋地转</li>
+                  <li>无耳鸣、无眼花、无肢体麻木</li>
+                  <li>曾就诊神经科、骨科等</li>
+                  <li><strong>头颅CT、经颅多普勒、血常规等未见明显异常</strong></li>
+                  <li>治疗后头晕有所缓解，但仍觉头部晃动、头皮紧绷</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="sub-label">③ 初诊（1月11日）</div>
+            <div class="card card-rust" style="margin-bottom:6px">
+              <div class="card-body">
+                <ul>
+                  <li>焦虑不安，时有头晕，头部晃动感</li>
+                  <li>颈痛，痛连肩背，短气，心慌</li>
+                  <li>胃纳一般，大便偏干</li>
+                  <li>舌淡，苔白，脉弦滑</li>
+                </ul>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+              <div class="stat-box"><div class="stat-num" style="font-size:36px;color:#8b4513">痰浊中阻</div><div class="stat-label">中医辨证</div></div>
+              <div class="stat-box"><div class="stat-num" style="font-size:clamp(22px, 2.1vw, 27px);color:var(--teal)">健脾化痰<br>升清降浊</div><div class="stat-label">治法</div></div>
+            </div>
+            <div class="card card-rust">
+              <div class="card-title"><span class="icon" style="background:rgba(139,69,19,0.12);color:#8b4513;width:28px;height:28px">🌿</span>葛根汤 + 苓桂术甘汤加减</div>
+              <div><span class="medicine-chip">葛根</span><span class="medicine-chip">桂枝</span><span class="medicine-chip">大枣</span><span class="medicine-chip">白术</span><span class="medicine-chip">鸡血藤</span><span class="medicine-chip">白芍</span><span class="medicine-chip">茯苓</span><span class="medicine-chip">半夏</span><span class="medicine-chip">炙麻黄</span><span class="medicine-chip">甘草</span><span class="medicine-chip">泽泻</span><span class="medicine-chip">秦艽</span><span class="medicine-chip">威灵仙</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 24-25 EMPTY, SLIDE 26: CASE 4 FOLLOW-UP ===== -->
+  <div class="slide" id="slide-24">
+    <div class="slide-std">
+      <div class="slide-header" style="background:linear-gradient(135deg,#3d1c08,#8b4513)">
+        <div class="slide-header-title">病例四：复诊变化与方药加减</div>
+        <div class="slide-header-tag">效不更方 · 微调善后 · 快速转归</div>
+      </div>
+      <div class="slide-body">
+        <div class="cols-3" style="gap:10px">
+          <div class="timeline-item" style="border-top-color:#8b4513">
+            <div class="timeline-label" style="color:#8b4513">二诊 · 1月13日</div>
+            <div class="timeline-content">
+              <ul>
+                <li>焦虑稍减，眩晕减轻</li>
+                <li>头部暂无紧绷，无头痛</li>
+                <li>颈痛、肩背痛减轻</li>
+                <li>活动后少许短气，偶有心悸</li>
+                <li>昨大便3次，后两次偏烂</li>
+                <li>舌淡红，苔薄白，脉弦滑</li>
+              </ul>
+              <div class="card mt12 card-rust" style="padding:10px">
+                <div style="font-size:clamp(18px, 1.65vw, 22px);color:#8b4513;font-weight:600">方药调整</div>
+                <div style="font-size:clamp(18px, 1.65vw, 22px);color:#555;margin-top:4px">加强化湿行气、宽胸宁心，稍佐宣肺以通调水道</div>
+                <div style="margin-top:4px"><span class="medicine-chip">薏苡仁</span><span class="medicine-chip">厚朴</span><span class="medicine-chip">豆蔻</span><span class="medicine-chip">羌活</span><span class="medicine-chip">独活</span><span class="medicine-chip">杏仁</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="timeline-item" style="border-top-color:#2d6a4f">
+            <div class="timeline-label" style="color:#2d6a4f">三诊 · 1月16日 🎉</div>
+            <div class="timeline-content">
+              <ul>
+                <li><strong>精神状态明显好转</strong></li>
+                <li>眩晕明显减轻，头部已无紧绷，无头痛</li>
+                <li>颈痛、肩背痛减轻约<strong>90%</strong></li>
+                <li>偶有活动后短气，<strong>无心悸</strong></li>
+                <li>纳可，睡眠改善，大便正常</li>
+              </ul>
+              <div class="highlight-box mt12" style="padding:10px">
+                <div style="color:var(--gold);font-size:27px;font-weight:600">效不更方</div>
+                <div style="color:rgba(255,255,255,0.8);font-size:24px;margin-top:4px">微调善后巩固，葛根汤合苓桂术甘汤加减，续7剂</div>
+              </div>
+            </div>
+          </div>
+          <div class="timeline-item" style="border-top-color:#1b6ca8">
+            <div class="timeline-label" style="color:#1b6ca8">随访结果</div>
+            <div class="timeline-content">
+              <ul>
+                <li>头晕缓解，体力恢复</li>
+                <li>无心悸等不适</li>
+                <li><strong>重拾生活信心</strong></li>
+                <li>能较好照顾自己和孩子</li>
+              </ul>
+              <div class="quote-box mt12" style="font-size:27px">
+                从焦虑失眠→眩晕心悸→生活受限，<br>经治疗后全面恢复。
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 27: CASE 4 MECHANISM ===== -->
+  <div class="slide" id="slide-25">
+    <div class="slide-std">
+      <div class="slide-header" style="background:linear-gradient(135deg,#3d1c08,#8b4513)">
+        <div class="slide-header-title">病例四：病机分析、方义与经典依据</div>
+        <div class="slide-header-tag">无痰不作眩 · 调脾胃以宁心 · 化痰湿以畅气机</div>
+      </div>
+      <div class="slide-body">
+        <div class="cols-3" style="gap:10px">
+          <div class="card card-rust">
+            <div class="card-title"><span class="icon" style="background:rgba(139,69,19,0.12);color:#8b4513;width:28px;height:28px">🔬</span>病机分析</div>
+            <div class="card-body">
+              <ul>
+                <li>纳差、苔白、脉弦滑→提示<strong>痰浊中阻</strong></li>
+                <li>丹溪"<strong>无痰不作眩</strong>"在此运用</li>
+                <li>焦虑、失眠、心悸，与痰湿阻滞、气机不畅相关，非单纯心神不宁</li>
+                <li>痰浊中阻，清阳不升，浊阴不降→头目失清而眩</li>
+                <li>气机郁滞、痰湿胶着→心悸、焦虑、短气</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-rust">
+            <div class="card-title"><span class="icon" style="background:rgba(139,69,19,0.12);color:#8b4513;width:28px;height:28px">⚗️</span>方义解析</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>苓桂术甘汤：</strong>温化中焦痰饮，平冲降逆</li>
+                <li><strong>葛根汤：</strong>升举脾胃清阳，上濡清窍止眩</li>
+                <li><strong>茯苓、泽泻、薏苡仁：</strong>渗湿降浊，给邪出路</li>
+                <li><strong>半夏、厚朴：</strong>化痰下气，一升一降，恢复中焦斡旋</li>
+                <li><strong>麻黄、桂枝、羌活、独活、秦艽、威灵仙：</strong>风药轻扬，风能胜湿，兼治颈肩痛</li>
+                <li><strong>鸡血藤、白芍：</strong>养血活络，缓急止痛</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-red">
+            <div class="card-title"><span class="icon icon-red">💡</span>情志病临床启示</div>
+            <div class="card-body">
+              <ul>
+                <li>本案<strong>未大量使用补益及安神定志药</strong>，而是通过<strong>化痰湿、畅气机</strong>达到宁心之效</li>
+                <li>朱丹溪六郁理论（气、血、痰、火、湿、食），本案以<strong>痰与气为主</strong></li>
+              </ul>
+              <div class="quote-box" style="margin-top:10px;font-size:27px">
+                《内经》："疏其血气，令其调达，而致和平。"
+              </div>
+              <ul style="margin-top:8px">
+                <li>妇科情志症状——焦虑、抑郁、心悸、失眠，需从<strong>气血痰湿</strong>入手，非仅心理疏导</li>
+                <li>抓住<strong>"脾胃"枢纽</strong>，调和气血痰湿，往往执简驭繁</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 28: CASE 4 CONNECTION TO GYNECOLOGY ===== -->
+  <div class="slide" id="slide-26">
+    <div class="slide-std">
+      <div class="slide-header" style="background:linear-gradient(135deg,#3d1c08,#8b4513)">
+        <div class="slide-header-title">病例四：与妇科情志调治的关系</div>
+        <div class="slide-header-tag">以血为本 · 脾胃为枢 · 身心同调</div>
+      </div>
+      <div class="slide-body">
+        <div class="cols-2" style="gap:8px">
+          <div class="card card-rust">
+            <div class="card-title"><span class="icon" style="background:rgba(139,69,19,0.12);color:#8b4513;width:28px;height:28px">❓</span>为何纳入本次妇科分享</div>
+            <div class="card-body">
+              <ul>
+                <li>患者处于产后家庭角色改变与长期两地分居背景</li>
+                <li>情志焦虑先见失眠，后发展为<strong>眩晕、心悸、乏力及生活能力下降</strong></li>
+                <li>病机与妇科常见<strong>痰湿型月经后期、闭经、带下病，以及围绝经期眩晕、心悸、焦虑</strong>等相通</li>
+                <li>女性以肝为先天，以血为本；脾为气血生化之源。<strong>脾虚痰湿内生，可导致冲任失调、气血不和</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-teal">
+            <div class="card-title"><span class="icon icon-teal">🔗</span>临床借鉴</div>
+            <div class="card-body">
+              <ul>
+                <li>对妇科患者的失眠、心悸、焦虑、眩晕，不宜只作<strong>"心理问题"</strong>处理</li>
+                <li>应结合纳差、苔白、痰湿、便溏、头重、胸闷、颈肩不适等整体线索</li>
+                <li>情志调治可通过<strong>"调脾胃、化痰湿、畅气机、和气血"</strong>实现</li>
+                <li>基层门诊可通过连续随访，观察患者从症状缓解到<strong>生活信心恢复</strong>的全过程</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 29: COMMON LOGIC ===== -->
+  <div class="slide" id="slide-27">
+    <div class="slide-std">
+      <div class="slide-header">
+        <div class="slide-header-title">四个病例的共通辨治逻辑</div>
+        <div class="slide-header-tag">从"病"看到"人" · 调体质 · 稳情志 · 管长期</div>
+      </div>
+      <div class="slide-body">
+        <!-- Row 1: cards 1-3 -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(8px,1vw,14px);margin-bottom:clamp(8px,1vw,14px)">
+          <div class="card card-red">
+            <div class="card-title" style="font-size:30px"><span class="icon icon-red" style="font-size:27px">1️⃣</span>识别情志因素</div>
+            <div class="card-body">
+              <ul>
+                <li>压力、焦虑、疑病</li>
+                <li>睡眠不足、熬夜</li>
+                <li>疼痛恐惧、复发担忧</li>
+                <li>治疗选择与依从性顾虑</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-jade">
+            <div class="card-title" style="font-size:30px"><span class="icon icon-jade" style="font-size:27px">2️⃣</span>辨病与辨证并重</div>
+            <div class="card-body">
+              <ul>
+                <li>痛经：不只看瘀</li>
+                <li>带下：不只清热祛湿</li>
+                <li>癥积：不只看囊肿大小</li>
+                <li>眩晕：不只安神补虚</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-teal">
+            <div class="card-title" style="font-size:30px"><span class="icon icon-teal" style="font-size:27px">3️⃣</span>动态分期调治</div>
+            <div class="card-body">
+              <ul>
+                <li>经前/经期/经后不同</li>
+                <li>证候随治疗而变化</li>
+                <li>方药需随访调整</li>
+                <li>指标与症状均观察</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- Row 2: cards 4-5 centred -->
+        <div style="display:flex;justify-content:center;gap:clamp(8px,1vw,14px)">
+          <div class="card" style="border-left-color:#8b4513;width:32%">
+            <div class="card-title" style="font-size:30px"><span class="icon" style="background:rgba(139,69,19,0.1);color:#8b4513;font-size:27px;width:28px;height:28px">4️⃣</span>药物与调护并重</div>
+            <div class="card-body">
+              <ul>
+                <li>中药、艾灸、外治</li>
+                <li>睡眠管理</li>
+                <li>饮食作息调整</li>
+                <li>规范复查与随访</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card" style="border-left-color:#c9a84c;width:32%">
+            <div class="card-title" style="font-size:30px"><span class="icon icon-gold" style="font-size:27px">5️⃣</span>基层优势</div>
+            <div class="card-body">
+              <ul>
+                <li>连续随访</li>
+                <li>健康宣教</li>
+                <li>提高依从性</li>
+                <li>长期身心同调</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-box mt16" style="text-align:center">
+          <strong>核心：</strong>从"病"看到"人"，从"止症状"走向"<em style="color:var(--gold)">调体质、稳情志、管长期</em>"
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 30: CLINICAL SUGGESTIONS ===== -->
+  <div class="slide" id="slide-28">
+    <div class="slide-std">
+      <div class="slide-header">
+        <div class="slide-header-title">基层应用建议：将情志调治纳入常规妇科管理</div>
+        <div class="slide-header-tag">传承精华 · 守正创新 · 仁心仁术 · 服务基层</div>
+      </div>
+      <div class="slide-body">
+        <div class="cols-2" style="gap:8px">
+          <div class="card card-teal">
+            <div class="card-title"><span class="icon icon-teal">❓</span>问诊中建议增加的内容</div>
+            <div class="card-body">
+              <ul>
+                <li>经前是否烦躁、焦虑、乳胀或情绪波动</li>
+                <li>是否长期熬夜、入睡困难、易醒、睡后不解乏</li>
+                <li>疼痛或瘙痒是否带来恐惧、回避、羞耻或疑病</li>
+                <li>工作、家庭、亲密关系压力是否明显</li>
+                <li>症状是否随压力、月经周期、性生活、气候、饮食作息而加重</li>
+                <li>患者是否理解疾病机制，是否有药物副作用担忧或治疗顾虑</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-jade">
+            <div class="card-title"><span class="icon icon-jade">✅</span>治疗与随访中建议落实的内容</div>
+            <div class="card-body">
+              <ul>
+                <li>用中医语言解释病机，让患者知道"为什么反复"</li>
+                <li>根据经期阶段、证候变化和检查指标动态调整方药</li>
+                <li>把睡眠、饮食、运动、寒凉刺激、局部护理纳入处方外管理</li>
+                <li>明确随访指标：症状变化、月经情况、舌脉变化、检查指标</li>
+                <li>对慢性病程患者，解释"症状改善、指标下降、病灶缩小"可能不同步</li>
+                <li>通过连续随访建立信心，提高依从性</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 31: CLASSICAL REFERENCES ===== -->
+  <div class="slide" id="slide-29">
+    <div class="slide-std">
+      <div class="slide-header">
+        <div class="slide-header-title">经典依据与方剂来源汇总</div>
+        <div class="slide-header-tag">传承精华 · 守正创新</div>
+      </div>
+      <div class="slide-body">
+        <div class="cols-2" style="gap:8px">
+          <div>
+            <div class="section-title">经典文献依据</div>
+            <div style="display:flex;flex-direction:column;gap:5px">
+              <div class="quote-box" style="font-size:clamp(12px,1.3vw,17px);padding:6px 12px">《傅青主女科》："夫带下俱是湿症。"</div>
+              <div class="quote-box" style="font-size:clamp(12px,1.3vw,17px);padding:6px 12px">《金匮要略·妇人杂病》："妇人之病，因虚，积冷，结气。"</div>
+              <div class="quote-box" style="font-size:clamp(12px,1.3vw,17px);padding:6px 12px">《金匮要略》："病痰饮者，当以温药和之。"</div>
+              <div class="quote-box" style="font-size:clamp(12px,1.3vw,17px);padding:6px 12px">《金匮要略·妇人妊娠病》："妇人宿有癥病……当下其癥，桂枝茯苓丸主之。"</div>
+              <div class="quote-box" style="font-size:clamp(12px,1.3vw,17px);padding:6px 12px">《医学入门·妇人门》："善治癥瘕者，调其气而破其血。"</div>
+              <div class="quote-box" style="font-size:clamp(12px,1.3vw,17px);padding:6px 12px">《内经》："疏其血气，令其调达，而致和平。"</div>
+              <div class="quote-box" style="font-size:clamp(12px,1.3vw,17px);padding:6px 12px">朱丹溪："无痰不作眩"及六郁理论。</div>
+            </div>
+          </div>
+          <div>
+            <div class="section-title">方剂来源与本次病例应用</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div class="card" style="border-left-color:#c9a84c;padding:12px">
+                <div class="card-title" style="margin-bottom:4px;font-size:30px">参苓白术散</div>
+                <div style="font-size:clamp(18px, 1.65vw, 22px);color:#888">《太平惠民和剂局方》——用于脾阴不足、脾胃运化失常</div>
+              </div>
+              <div class="card" style="border-left-color:#1b6ca8;padding:12px">
+                <div class="card-title" style="margin-bottom:4px;font-size:30px">归脾汤</div>
+                <div style="font-size:clamp(18px, 1.65vw, 22px);color:#888">严用和《济生方》——心脾两虚、气血不足、失眠易醒</div>
+              </div>
+              <div class="card" style="border-left-color:#8b4513;padding:12px">
+                <div class="card-title" style="margin-bottom:4px;font-size:30px">黄芪建中汤</div>
+                <div style="font-size:clamp(18px, 1.65vw, 22px);color:#888">《伤寒论》建中法——中虚偏寒、温中补虚</div>
+              </div>
+              <div class="card" style="border-left-color:#c0392b;padding:12px">
+                <div class="card-title" style="margin-bottom:4px;font-size:30px">血府逐瘀汤 · 少腹逐瘀汤</div>
+                <div style="font-size:clamp(18px, 1.65vw, 22px);color:#888">王清任《医林改错》——活血化瘀、温经止痛</div>
+              </div>
+              <div class="card" style="border-left-color:#2d6a4f;padding:12px">
+                <div class="card-title" style="margin-bottom:4px;font-size:30px">苓桂术甘汤 · 桂枝茯苓丸 · 葛根汤</div>
+                <div style="font-size:clamp(18px, 1.65vw, 22px);color:#888">《金匮要略》·《伤寒论》——温阳化饮·消癥·升清止眩</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 32: FINAL ===== -->
+  <div class="slide" id="slide-30">
+    <div class="slide-final">
+      <div class="final-pattern"></div>
+      <div class="cover-seal" style="position:relative;top:auto;right:auto;margin-bottom:30px">中</div>
+      <div class="final-title">
+        妇科疾病的治疗，<br>不仅要<em>调经、止痛、止带、消癥</em>，<br>更要<em>调气机、养气血、化痰湿、安情志、稳睡眠</em>。
+      </div>
+      <div class="final-divider"></div>
+      <div class="final-thanks">感谢聆听，敬请批评指正</div>
+      <div class="final-doctor">东莞市虎门中医院 · 胡丽华 副主任医师</div>
+      <div style="margin-top:20px;color:rgba(255,255,255,0.3);font-size:24px;letter-spacing:2px">厚德精医 · 传承创新 · 仁心仁术 · 服务基层</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Progress bar -->
+<div class="progress-bar" id="progress"></div>
+
+<!-- Dot navigation -->
+<div class="thumb-strip" id="dots"></div>
+
+<script>
+  const totalSlides = 30;
+  let current = 1;
+
+  // Build dots
+  const dotsContainer = document.getElementById('dots');
+  for (let i = 1; i <= totalSlides; i++) {
+    const d = document.createElement('div');
+    d.className = 'thumb-dot' + (i === 1 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    d.title = `第${i}页`;
+    dotsContainer.appendChild(d);
+  }
+
+  function goTo(n, dir) {
+    if (n < 1 || n > totalSlides) return;
+    const prev = document.getElementById(`slide-${current}`);
+    const direction = dir ?? (n > current ? 1 : -1);
+
+    // Exit animation on previous slide
+    prev.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+    prev.style.opacity = '0';
+    prev.style.transform = `translateX(${direction * -40}px) scale(0.97)`;
+
+    setTimeout(() => {
+      prev.classList.remove('active');
+      prev.style.transition = '';
+      prev.style.opacity = '';
+      prev.style.transform = '';
+
+      document.querySelectorAll('.thumb-dot')[current - 1].classList.remove('active');
+      current = n;
+
+      const next = document.getElementById(`slide-${current}`);
+      // Start next slide off-screen
+      next.style.opacity = '0';
+      next.style.transform = `translateX(${direction * 40}px) scale(0.97)`;
+      next.style.transition = 'none';
+      next.classList.add('active');
+
+      // Force reflow then animate in
+      next.getBoundingClientRect();
+      next.style.transition = 'opacity 0.35s cubic-bezier(0.22,1,0.36,1), transform 0.35s cubic-bezier(0.22,1,0.36,1)';
+      next.style.opacity = '1';
+      next.style.transform = 'translateX(0) scale(1)';
+
+      setTimeout(() => {
+        next.style.transition = '';
+        next.style.opacity = '';
+        next.style.transform = '';
+      }, 380);
+
+      document.querySelectorAll('.thumb-dot')[current - 1].classList.add('active');
+      document.getElementById('counter').textContent = `${current} / ${totalSlides}`;
+      document.getElementById('progress').style.width = `${(current / totalSlides) * 100}%`;
+    }, 220);
+  }
+
+  window.nextSlide = () => goTo(current + 1,  1);
+  window.prevSlide = () => goTo(current - 1, -1);
+  window.goTo = goTo;
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); prevSlide(); }
+  });
+
+  // Init progress
+  document.getElementById('progress').style.width = `${(1 / totalSlides) * 100}%`;
+
+  // Touch swipe
+  let touchStart = 0;
+  document.addEventListener('touchstart', e => { touchStart = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const diff = touchStart - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) { diff > 0 ? nextSlide() : prevSlide(); }
+  });
+</script>
+
+</body>
+</html>
